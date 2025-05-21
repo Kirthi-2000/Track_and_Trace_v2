@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
   'use strict';
   var c3LineChart = c3.generate({
     bindto: '#c3-line-chart',
@@ -19,7 +19,7 @@
     }
   });
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3LineChart.load({
       columns: [
         ['data1', 230, 190, 300, 500, 300, 400]
@@ -27,7 +27,7 @@
     });
   }, 1000);
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3LineChart.load({
       columns: [
         ['data3', 130, 150, 200, 300, 200, 100]
@@ -35,7 +35,7 @@
     });
   }, 1500);
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3LineChart.unload({
       ids: 'data1'
     });
@@ -85,7 +85,7 @@
     }
   });
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3BarChart.load({
       columns: [
         ['data3', 130, -150, 200, 300, -200, 100]
@@ -124,13 +124,13 @@
         ['data2', 120],
       ],
       type: 'pie',
-      onclick: function(d, i) {
+      onclick: function (d, i) {
         console.log("onclick", d, i);
       },
-      onmouseover: function(d, i) {
+      onmouseover: function (d, i) {
         console.log("onmouseover", d, i);
       },
-      onmouseout: function(d, i) {
+      onmouseout: function (d, i) {
         console.log("onmouseout", d, i);
       }
     },
@@ -145,7 +145,7 @@
     }
   });
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3PieChart.load({
       columns: [
         ["Income", 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1, 0.2, 0.4, 0.4, 0.3, 0.3, 0.3, 0.2, 0.4, 0.2, 0.5, 0.2, 0.2, 0.4, 0.2, 0.2, 0.2, 0.2, 0.4, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.2, 0.2, 0.3, 0.3, 0.2, 0.6, 0.4, 0.3, 0.2, 0.2, 0.2, 0.2],
@@ -155,7 +155,7 @@
     });
   }, 1500);
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3PieChart.unload({
       ids: 'data1'
     });
@@ -171,13 +171,13 @@
         ['data2', 120],
       ],
       type: 'donut',
-      onclick: function(d, i) {
+      onclick: function (d, i) {
         console.log("onclick", d, i);
       },
-      onmouseover: function(d, i) {
+      onmouseover: function (d, i) {
         console.log("onmouseover", d, i);
       },
-      onmouseout: function(d, i) {
+      onmouseout: function (d, i) {
         console.log("onmouseout", d, i);
       }
     },
@@ -195,7 +195,7 @@
     }
   });
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3DonutChart.load({
       columns: [
         ["setosa", 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1, 0.2, 0.4, 0.4, 0.3, 0.3, 0.3, 0.2, 0.4, 0.2, 0.5, 0.2, 0.2, 0.4, 0.2, 0.2, 0.2, 0.2, 0.4, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.2, 0.2, 0.3, 0.3, 0.2, 0.6, 0.4, 0.3, 0.2, 0.2, 0.2, 0.2],
@@ -205,7 +205,7 @@
     });
   }, 1500);
 
-  setTimeout(function() {
+  setTimeout(function () {
     c3DonutChart.unload({
       ids: 'data1'
     });

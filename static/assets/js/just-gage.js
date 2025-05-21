@@ -6,6 +6,7 @@ window.onload = function() {
     value: getRandomInt(0, 100),
     min: 0,
     max: 100,
+    valueFontColor : '#5b5b5b',
     title: "Big Fella",
     label: "pounds"
   });
@@ -16,9 +17,6 @@ window.onload = function() {
   }, 2500);
 };
 
-
-
-
 document.addEventListener("DOMContentLoaded", function(event) {
   g2 = new JustGage({
     id: "g2",
@@ -28,7 +26,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     donut: true,
     gaugeWidthScale: 0.6,
     counter: true,
-    hideInnerShadow: true
+    hideInnerShadow: true,
+    valueFontColor : '#5b5b5b',
   });
 
   document.getElementById('g2_refresh').addEventListener('click', function() {
@@ -43,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     symbol: '%',
     pointer: true,
     gaugeWidthScale: 0.6,
+    valueFontColor : '#5b5b5b',
     customSectors: [{
       color: '#ff0000',
       lo: 50,
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     max: 100,
     symbol: '%',
     pointer: true,
+    valueFontColor : '#5b5b5b',
     pointerOptions: {
       toplength: -15,
       bottomlength: 10,
@@ -83,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     symbol: '%',
     donut: true,
     pointer: true,
+    valueFontColor : '#5b5b5b',
     gaugeWidthScale: 0.4,
     pointerOptions: {
       toplength: 10,
@@ -109,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     max: 100,
     symbol: '%',
     pointer: true,
+    valueFontColor : '#5b5b5b',
     pointerOptions: {
       toplength: 8,
       bottomlength: -20,
@@ -125,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     min: 0,
     max: 100,
     reverse: true,
+    valueFontColor : '#5b5b5b',
     gaugeWidthScale: 0.6,
     customSectors: [{
       color: '#ff0000',
@@ -144,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     min: 0,
     max: 500,
     reverse: true,
+    valueFontColor : '#5b5b5b',
     gaugeWidthScale: 0.6,
     counter: true
   });
@@ -155,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     max: 100000,
     humanFriendly: true,
     reverse: true,
+    valueFontColor : '#5b5b5b',
     gaugeWidthScale: 1.3,
     customSectors: [{
       color: "#ff0000",
@@ -175,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     max: 100,
     symbol: '%',
     reverse: true,
+    valueFontColor : '#5b5b5b',
     gaugeWidthScale: 0.1,
     counter: true
   });

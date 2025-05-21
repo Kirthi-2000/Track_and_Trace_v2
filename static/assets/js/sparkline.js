@@ -24,8 +24,8 @@
       type: 'pie',
       sliceColors: ['#0CB5F9', '#58d8a3', '#F4767B', '#F9B65F'],
       borderColor: '#',
-      width: '100%',
-      height: '100%'
+      width: '400px',
+      height: '200px'
     });
   }
 

@@ -4,7 +4,7 @@
 
   if ($('#circleProgress1').length) {
     var bar = new ProgressBar.Circle(circleProgress1, {
-      color: '#000',
+      color: '$white',
       // This has to be the same size as the maximum width to
       // prevent clipping
       strokeWidth: 4,
@@ -12,7 +12,8 @@
       easing: 'easeInOut',
       duration: 1400,
       text: {
-        autoStyleContainer: false
+        autoStyleContainer: false,
+
       },
       from: {
         color: '#aaa',
@@ -43,7 +44,7 @@
 
   if ($('#circleProgress2').length) {
     var bar = new ProgressBar.Circle(circleProgress2, {
-      color: '#000',
+      color: '$white',
       // This has to be the same size as the maximum width to
       // prevent clipping
       strokeWidth: 4,
@@ -51,7 +52,7 @@
       easing: 'easeInOut',
       duration: 1400,
       text: {
-        autoStyleContainer: false
+        autoStyleContainer: false,
       },
       from: {
         color: '#aaa',
@@ -82,7 +83,7 @@
 
   if ($('#circleProgress3').length) {
     var bar = new ProgressBar.Circle(circleProgress3, {
-      color: '#000',
+      color: '$white',
       // This has to be the same size as the maximum width to
       // prevent clipping
       strokeWidth: 4,
@@ -90,7 +91,7 @@
       easing: 'easeInOut',
       duration: 1400,
       text: {
-        autoStyleContainer: false
+        autoStyleContainer: false,
       },
       from: {
         color: '#aaa',
@@ -121,7 +122,7 @@
 
   if ($('#circleProgress4').length) {
     var bar = new ProgressBar.Circle(circleProgress4, {
-      color: '#000',
+      color: '$white',
       // This has to be the same size as the maximum width to
       // prevent clipping
       strokeWidth: 4,
@@ -129,7 +130,7 @@
       easing: 'easeInOut',
       duration: 1400,
       text: {
-        autoStyleContainer: false
+        autoStyleContainer: false,
       },
       from: {
         color: '#aaa',
@@ -160,7 +161,7 @@
 
   if ($('#circleProgress5').length) {
     var bar = new ProgressBar.Circle(circleProgress5, {
-      color: '#000',
+      color: '$white',
       // This has to be the same size as the maximum width to
       // prevent clipping
       strokeWidth: 4,
@@ -168,7 +169,7 @@
       easing: 'easeInOut',
       duration: 1400,
       text: {
-        autoStyleContainer: false
+        autoStyleContainer: false,
       },
       from: {
         color: '#aaa',
@@ -199,7 +200,7 @@
 
   if ($('#circleProgress6').length) {
     var bar = new ProgressBar.Circle(circleProgress6, {
-      color: '#000',
+      color: '$white',
       // This has to be the same size as the maximum width to
       // prevent clipping
       strokeWidth: 4,
@@ -207,7 +208,7 @@
       easing: 'easeInOut',
       duration: 1400,
       text: {
-        autoStyleContainer: false
+        autoStyleContainer: false,
       },
       from: {
         color: '#aaa',

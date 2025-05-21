@@ -1,6 +1,6 @@
-(function($) {
+(function ($) {
   'use strict';
-  $.fn.andSelf = function() {
+  $.fn.andSelf = function () {
     return this.addBack.apply(this, arguments);
   }
 

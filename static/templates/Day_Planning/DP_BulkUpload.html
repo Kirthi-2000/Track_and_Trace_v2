@@ -1,0 +1,1117 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style nonce="{{ csp_nonce }}">
+  :root {
+    --clr-primary: #126a83;      /* Teal */
+    --clr-secondary: #023E4D;    /* Deep Navy */
+    --clr-tertiary: #FF6B6B;     /* Soft Coral */
+    --clr-bg: #F5F9FA;           /* Light background */
+    --clr-surface: #FFFFFF;      /* Surface white */
+    --clr-text: #212529;         /* Default text */
+    --clr-muted: #6C757D;        /* Muted text */
+  }
+
+  body {
+    margin: 0;
+    background: var(--clr-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--clr-text);
+  }
+
+  /* Card and Container Styles */
+  .card {
+    background: var(--clr-surface);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+    max-width: 1200px;
+  }
+
+  /* Header Banner */
+  .header-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--clr-secondary);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .header-banner h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--clr-surface);
+    position: relative;
+    z-index: 1;
+    margin: 0;
+  }
+  .header-banner::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 45deg, var(--clr-tertiary), var(--clr-tertiary));
+    animation: rotate 12s linear infinite;
+    opacity: 0.2;
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  /* Header animation vector scaled down and positioned */
+  .header-banner .animation {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    opacity: 0.25;
+  }
+  .header-banner .animation svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Tabs */
+  .tab-list {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    justify-content: center;
+  }
+  .tab-trigger {
+    flex: 0 0 auto;
+    width: 130px;
+    background: var(--clr-primary);
+    color: var(--clr-surface);
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tab-trigger .icon {
+    margin-right: 0.3rem;
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s;
+  }
+  .tab-trigger:hover .icon {
+    transform: scale(1.15);
+  }
+  .tab-trigger.active {
+    background: var(--clr-tertiary);
+    box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+    transform: scale(1.02);
+  }
+  .tab-content {
+    display: none;
+  }
+  .tab-content.show {
+    display: block;
+  }
+
+  /* Buttons */
+  .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 0.65rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-primary {
+    background: var(--clr-primary);
+    color: var(--clr-surface);
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--clr-primary);
+    color: var(--clr-primary);
+  }
+  .btn-success {
+    background: var(--clr-tertiary);
+    color: var(--clr-surface);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .btn svg.icon {
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* File Card Styling */
+  .file-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .file-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-muted);
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: box-shadow 0.3s;
+  }
+  .file-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  .file-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  .file-icon {
+    height: 36px;
+    width: 36px;
+    background: var(--clr-bg);
+    color: var(--clr-primary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+  }
+  .file-details {
+    overflow: hidden;
+  }
+  .file-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+  .file-size {
+    font-size: 0.8rem;
+    color: var(--clr-muted);
+    margin-top: 2px;
+  }
+  .remove-file {
+    height: 32px;
+    width: 32px;
+    border: none;
+    background: var(--clr-bg);
+    color: var(--clr-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  .remove-file:hover {
+    background: var(--clr-tertiary);
+    color: var(--clr-surface);
+  }
+
+  /* Form Styles - Horizontal Single Upload */
+  .single-upload-form {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+    background: var(--clr-surface);
+    border-radius: 8px;
+    z-index: 1;
+  }
+  .single-upload-form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(0,169,170,0.1), rgba(255,107,107,0.1));
+    background-size: 400% 400%;
+    z-index: -2;
+    animation: gradientAnimation 15s ease infinite;
+  }
+  @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Floating Shapes Animation Overlay */
+  .single-upload-form::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle, rgba(0,169,170,0.15) 20%, transparent 20%);
+    background-size: 80px 80px;
+    opacity: 0.2;
+    z-index: -1;
+    animation: floatShapes 10s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes floatShapes {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(10px, 10px) scale(1); }
+  }
+
+  /* Form Grid and Fields (unchanged) */
+  .single-upload-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .single-upload-form .form-group {
+    margin-bottom: 0.5rem;
+  }
+  .single-upload-form .form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    display: block;
+    color: var(--clr-text);
+  }
+  .single-upload-form .form-group input {
+    width: 200px; /* Reduced fixed width */
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    height: 2rem;
+    border: 1px solid var(--clr-muted);
+    border-radius: 6px;
+    background: var(--clr-bg);
+    transition: border-color 0.3s ease;
+  }
+  .single-upload-form .form-group input:focus {
+    outline: none;
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 2px rgba(0,169,170,0.2);
+  }
+  .form-actions {
+    margin-top: 1rem;
+    text-align: right;
+  }
+  @media (max-width: 768px) {
+    .single-upload-form .form-grid {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+    .single-upload-form .form-group input {
+      width: 100%;
+    }
+  }
+
+  /* Data Table Styles */
+  .data-table-card {
+    margin-top: 1.5rem;
+  }
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .table-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    color: var(--clr-text);
+    margin: 0;
+  }
+  .table-header h2 .icon {
+    margin-right: 0.5rem;
+  }
+  .table-container {
+    overflow-y: auto;
+    max-height: 320px;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--clr-bg);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .data-table th,
+  .data-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--clr-muted);
+  }
+  .data-table th {
+    font-weight: 600;
+    background: var(--clr-bg);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  .data-table th:hover {
+    background: var(--clr-surface);
+  }
+  .sort-icon {
+    margin-left: 0.5rem;
+  }
+  .data-table tbody tr:hover {
+    background: var(--clr-bg);
+  }
+  .data-table .actions {
+    width: 80px;
+    text-align: right;
+  }
+  .cell-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--clr-primary);
+    border-radius: 6px;
+  }
+  .cell-input:focus {
+    outline: none;
+  }
+
+  /* Delete Button in Table */
+  .btn-delete {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: var(--clr-muted);
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
+  }
+  .btn-delete:hover {
+    background: var(--clr-tertiary);
+    color: var(--clr-surface);
+  }
+  .editable-cell {
+    position: relative;
+    cursor: pointer;
+  }
+  .editable-cell:hover::after {
+    content: "✎";
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: var(--clr-muted);
+  }
+
+  /* Empty Table Message */
+  .empty-table {
+    text-align: center;
+    padding: 2rem 0;
+    background: var(--clr-bg);
+    border-radius: 8px;
+  }
+  .empty-table p {
+    color: var(--clr-muted);
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+  }
+
+  /* Toast Styles */
+  .toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 350px;
+  }
+  .toast {
+    background: var(--clr-surface);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+    display: flex;
+    align-items: flex-start;
+    animation: slideIn 0.3s ease-out;
+    border-left: 4px solid var(--clr-primary);
+  }
+  .toast.success {
+    border-left-color: var(--clr-primary);
+  }
+  .toast.error {
+    border-left-color: var(--clr-tertiary);
+  }
+  .toast-content {
+    flex: 1;
+    margin-right: 0.5rem;
+  }
+  .toast-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .toast-description {
+    font-size: 0.9rem;
+    color: var(--clr-muted);
+  }
+  .toast-close {
+    background: none;
+    border: none;
+    color: var(--clr-muted);
+    cursor: pointer;
+  }
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  /* Responsive adjustments for actions */
+  @media (max-width: 768px) {
+    .action-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+    .action-buttons {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  /* Animated Background for the Form Container */
+  .single-upload-form {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+    background: var(--clr-surface);
+    border-radius: 8px;
+  }
+  .single-upload-form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(0,169,170,0.1), rgba(255,107,107,0.1));
+    background-size: 400% 400%;
+    z-index: -1;
+    animation: gradientAnimation 15s ease infinite;
+  }
+  @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Existing Form Styles */
+  .single-upload-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .single-upload-form .form-group {
+    margin-bottom: 0.5rem;
+  }
+  .single-upload-form .form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    display: block;
+    color: var(--clr-text);
+  }
+  .single-upload-form .form-group input {
+    width: 200px; /* Reduced fixed width */
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    height: 2rem;
+    border: 1px solid var(--clr-muted);
+    border-radius: 6px;
+    background: var(--clr-bg);
+    transition: border-color 0.3s ease;
+  }
+  .single-upload-form .form-group input:focus {
+    outline: none;
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 2px rgba(0,169,170,0.2);
+  }
+  .form-actions {
+    margin-top: 1rem;
+    text-align: right;
+  }
+  @media (max-width: 768px) {
+    .single-upload-form .form-grid {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+    .single-upload-form .form-group input {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="header-banner">
+  <h1>Bulk Upload</h1>
+  <div class="animation">
+    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" opacity="0.9">
+        <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+</div>
+
+<main class="content">
+  <div class="card upload-card">
+    <div class="card-content">
+      <div class="tabs">
+        <div class="tab-list">
+          <button class="tab-trigger active" data-tab="bulk">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-surface)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Bulk Upload
+          </button>
+          <button class="tab-trigger" data-tab="single">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-surface)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Single Upload
+          </button>
+        </div>
+        
+        <div id="bulk-tab" class="tab-content show">
+          <div class="bulk-upload">
+            <div class="action-row" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+              <div class="action-buttons" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <label class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-surface)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  Select Excel File
+                  <input type="file" id="file-upload" accept=".xlsx,.xls" multiple hidden>
+                </label>
+                <button id="add-model-btn" class="btn btn-outline">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="3" y1="9" x2="21" y2="9"/>
+                    <line x1="3" y1="15" x2="21" y2="15"/>
+                    <line x1="9" y1="3" x2="9" y2="21"/>
+                    <line x1="15" y1="3" x2="15" y2="21"/>
+                  </svg>
+                  Add Model (Table)
+                </button>
+              </div>
+              <button id="upload-btn" class="btn btn-success" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-surface)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload Files
+              </button>
+            </div>
+            <div id="file-list" class="file-list"></div>
+          </div>
+        </div>
+        
+        <div id="single-tab" class="tab-content">
+          <form id="single-upload-form" class="single-upload-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="input_stock_no">Stock No</label>
+                <input type="text" id="input_stock_no" name="input_stock_no" placeholder="Enter stock no" required>
+                <div class="error-message" id="input_stock_no-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" id="model" name="model" placeholder="Enter model" required>
+                <div class="error-message" id="model-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="plating_color">Plating Color</label>
+                <input type="text" id="plating_color" name="plating_color" placeholder="Enter plating color" required>
+                <div class="error-message" id="plating_color-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="qty">Quantity</label>
+                <input type="number" id="qty" name="qty" placeholder="Enter quantity" required>
+                <div class="error-message" id="qty-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="s_loc">S Loc</label>
+                <input type="text" id="s_loc" name="s_loc" placeholder="Enter s loc" required>
+                <div class="error-message" id="s_loc-error"></div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-surface)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Entry
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="data-table-section" class="card data-table-card" style="display: none;">
+    <div class="card-content">
+      <div class="table-header">
+        <h2>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <rect x="3" y="3" width="16" height="16" rx="2" ry="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="3" y1="15" x2="21" y2="15"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+            <line x1="15" y1="3" x2="15" y2="21"/>
+          </svg>
+          Data Table
+        </h2>
+        <button id="add-row-btn" class="btn btn-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Add Row
+        </button>
+      </div>
+      <div class="table-container" id="data-table-container"></div>
+    </div>
+  </div>
+</main>
+</div>
+<div id="toast-container" class="toast-container"></div>
+
+<script nonce="{{ csp_nonce }}">
+  document.addEventListener('DOMContentLoaded', function () {
+    const triggers = document.querySelectorAll('.tab-trigger');
+    const contents = document.querySelectorAll('.tab-content');
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        triggers.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('show'));
+        trigger.classList.add('active');
+        const tabId = trigger.getAttribute('data-tab');
+        const activeTab = document.getElementById(`${tabId}-tab`);
+        if (activeTab) activeTab.classList.add('show');
+      });
+    });
+  });
+</script>
+<script nonce="{{ csp_nonce }}">
+  // DOM Elements and Event Initialization
+  document.addEventListener('DOMContentLoaded', () => {
+    const fileUploadInput = document.getElementById('file-upload');
+    const fileListContainer = document.getElementById('file-list');
+    const uploadButton = document.getElementById('upload-btn');
+    const addModelButton = document.getElementById('add-model-btn');
+    const addRowButton = document.getElementById('add-row-btn');
+    const dataTableSection = document.getElementById('data-table-section');
+    const dataTableContainer = document.getElementById('data-table-container');
+    const singleUploadForm = document.getElementById('single-upload-form');
+
+    const tabTriggers = document.querySelectorAll('.tab-trigger');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const settingsLink = document.getElementById('settings-link');
+
+    let files = [];
+    let tableData = [];
+    let columns = ['ID', 'Stock No', 'Model', 'Plating Color', 'Quantity', 'S Loc'];
+    let showTable = false;
+    let sortColumn = null;
+    let sortDirection = 'asc';
+
+    fileUploadInput.addEventListener('change', handleFileSelect);
+    uploadButton.addEventListener('click', handleUpload);
+    addModelButton.addEventListener('click', handleAddModel);
+    addRowButton.addEventListener('click', handleAddRow);
+    singleUploadForm.addEventListener('submit', handleSingleUpload);
+    if(settingsLink){
+      settingsLink.addEventListener('click', showSettingsToast);
+    }
+
+    tabTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const tab = trigger.getAttribute('data-tab');
+        tabTriggers.forEach(t => t.classList.remove('active'));
+        trigger.classList.add('active');
+        tabContents.forEach(content => {
+          content.classList.remove('show');
+          if (content.id === `${tab}-tab`) {
+            content.classList.add('show');
+          }
+        });
+      });
+    });
+
+    function handleFileSelect(e) {
+      const selectedFiles = Array.from(e.target.files);
+      if (selectedFiles.length === 0) return;
+      const validFiles = selectedFiles.filter(file => {
+        const type = file.type;
+        return type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+               type === 'application/vnd.ms-excel';
+      });
+      if (validFiles.length !== selectedFiles.length) {
+        showToast('Invalid file format', 'Please upload only Excel files (.xlsx, .xls)', 'error');
+        return;
+      }
+      files = [...files, ...validFiles];
+      renderFileList();
+      updateUploadButtonState();
+      showToast('File added', 'Your Excel file has been added successfully');
+    }
+
+    function renderFileList() {
+      fileListContainer.innerHTML = '';
+      if (files.length === 0) return;
+      files.forEach((file, index) => {
+        const fileCard = document.createElement('div');
+        fileCard.className = 'file-card';
+        fileCard.innerHTML = `
+          <div class="file-info">
+            <div class="file-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <div class="file-details">
+              <div class="file-name" title="${file.name}">${file.name}</div>
+              <div class="file-size">${formatFileSize(file.size)}</div>
+            </div>
+          </div>
+          <button class="remove-file" data-index="${index}" aria-label="Remove file">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--clr-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        `;
+        fileListContainer.appendChild(fileCard);
+        fileCard.querySelector('.remove-file').addEventListener('click', () => {
+          handleRemoveFile(index);
+        });
+      });
+    }
+
+    function handleRemoveFile(index) {
+      files = files.filter((_, i) => i !== index);
+      renderFileList();
+      updateUploadButtonState();
+      showToast('File removed', 'The file has been removed successfully');
+    }
+
+    function updateUploadButtonState() {
+      uploadButton.disabled = files.length === 0;
+    }
+
+    function handleUpload() {
+      if (files.length === 0) {
+        showToast('No files selected', 'Please select at least one Excel file to upload', 'error');
+        return;
+      }
+      const mockData = generateMockData();
+      tableData = mockData;
+      showTable = true;
+      dataTableSection.style.display = 'block';
+      renderTable();
+      showToast('Upload successful', `Data from ${files.length} ${files.length === 1 ? 'file' : 'files'} processed successfully`);
+    }
+
+    function handleAddModel() {
+      tableData = [];
+      showTable = true;
+      dataTableSection.style.display = 'block';
+      renderTable();
+      showToast('New model added', 'You can now add data to this model');
+    }
+
+    function handleAddRow() {
+      const newRow = columns.reduce((acc, col) => {
+        acc[col] = '';
+        return acc;
+      }, {});
+      if (tableData.length) {
+        const maxId = Math.max(...tableData.map(row => Number(row.ID)));
+        newRow.ID = String(maxId + 1);
+      } else {
+        newRow.ID = "1";
+      }
+      tableData.push(newRow);
+      renderTable();
+    }
+
+    function handleDeleteRow(index) {
+      tableData.splice(index, 1);
+      renderTable();
+      showToast('Row deleted', 'The row has been removed successfully');
+    }
+
+    function handleUpdateCell(rowIndex, columnName, value) {
+      tableData[rowIndex][columnName] = value;
+    }
+
+    function handleSingleUpload(e) {
+      e.preventDefault();
+      const formData = new FormData(singleUploadForm);
+      const formValues = {};
+      let isValid = true;
+      for (const [key, value] of formData.entries()) {
+        formValues[key] = value;
+        const errorElement = document.getElementById(`${key}-error`);
+        if (!value.trim()) {
+          document.getElementById(key).classList.add('error');
+          errorElement.textContent = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
+          isValid = false;
+        } else {
+          document.getElementById(key).classList.remove('error');
+          errorElement.textContent = '';
+        }
+      }
+      if (formValues.email && !validateEmail(formValues.email)) {
+        document.getElementById('email').classList.add('error');
+        document.getElementById('email-error').textContent = 'Please enter a valid email address';
+        isValid = false;
+      }
+      if (!isValid) return;
+      if (!formValues.ID) {
+        if (tableData.length) {
+          const maxId = Math.max(...tableData.map(row => Number(row.ID)));
+          formValues.ID = String(maxId + 1);
+        } else {
+          formValues.ID = "1";
+        }
+      }
+      tableData.push(formValues);
+      showTable = true;
+      dataTableSection.style.display = 'block';
+      renderTable();
+      resetForm(singleUploadForm);
+      showToast('Entry added', 'New record has been added successfully');
+    }
+
+    function handleSort(column) {
+      if (sortColumn === column) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortColumn = column;
+        sortDirection = 'asc';
+      }
+      renderTable();
+    }
+
+    function showSettingsToast(event) {
+      event.preventDefault();
+      showToast('Action performed', 'This is just a demo action button');
+    }
+
+    function renderTable() {
+      if (!showTable) return;
+      let sortedData = [...tableData];
+      if (sortColumn) {
+        sortedData.sort((a, b) => {
+          const valueA = a[sortColumn];
+          const valueB = b[sortColumn];
+          if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+          if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
+      if (tableData.length === 0) {
+        dataTableContainer.innerHTML = `
+          <div class="empty-table">
+            <p>No data available</p>
+            <p>Upload an Excel file or add entries manually</p>
+          </div>
+        `;
+        return;
+      }
+      const table = document.createElement('table');
+      table.className = 'data-table';
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      columns.forEach(column => {
+        const th = document.createElement('th');
+        th.innerHTML = `
+          ${column}
+          ${sortColumn === column ? `<span class="sort-icon">${sortDirection === 'asc' ? '↑' : '↓'}</span>` : ''}
+        `;
+        th.addEventListener('click', () => handleSort(column));
+        headerRow.appendChild(th);
+      });
+      const actionsTh = document.createElement('th');
+      actionsTh.className = 'actions';
+      actionsTh.textContent = 'Actions';
+      headerRow.appendChild(actionsTh);
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      sortedData.forEach((row, rowIndex) => {
+        const tr = document.createElement('tr');
+        columns.forEach(column => {
+          const td = document.createElement('td');
+          if (column === 'ID') {
+            td.textContent = row[column];
+          } else {
+            td.className = 'editable-cell';
+            td.textContent = row[column];
+            td.addEventListener('click', () => {
+              const currentValue = row[column] || '';
+              const input = document.createElement('input');
+              input.className = 'cell-input';
+              input.value = currentValue;
+              td.textContent = '';
+              td.appendChild(input);
+              input.focus();
+              const handleBlur = () => {
+                handleUpdateCell(rowIndex, column, input.value);
+                td.textContent = input.value;
+                input.removeEventListener('blur', handleBlur);
+                input.removeEventListener('keydown', handleKeydown);
+              };
+              const handleKeydown = (e) => {
+                if (e.key === 'Enter') {
+                  handleBlur();
+                } else if (e.key === 'Escape') {
+                  td.textContent = currentValue;
+                  input.removeEventListener('blur', handleBlur);
+                  input.removeEventListener('keydown', handleKeydown);
+                }
+              };
+              input.addEventListener('blur', handleBlur);
+              input.addEventListener('keydown', handleKeydown);
+            });
+          }
+          tr.appendChild(td);
+        });
+        const actionsTd = document.createElement('td');
+        actionsTd.className = 'actions';
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn-delete';
+        deleteButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--clr-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+        `;
+        deleteButton.addEventListener('click', () => handleDeleteRow(rowIndex));
+        actionsTd.appendChild(deleteButton);
+        tr.appendChild(actionsTd);
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      dataTableContainer.innerHTML = '';
+      dataTableContainer.appendChild(table);
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(1024));
+      return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+    }
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function resetForm(form) {
+      form.reset();
+      Array.from(form.elements).forEach(input => {
+        if (input.classList.contains('error')) {
+          input.classList.remove('error');
+        }
+      });
+      document.querySelectorAll('.error-message').forEach(elem => {
+        elem.textContent = '';
+      });
+    }
+
+    function generateMockData() {
+      return Array.from({ length: 10 }, (_, i) => ({
+        ID: String(i + 1),
+        'Stock No': `Stock ${i + 1}`,
+        Model: `Model ${i + 1}`,
+        'Plating Color': ['Silver', 'Gold', 'Black'][i % 3],
+        Quantity: 10 + i,
+        'S Loc': `Loc ${i + 1}`
+      }));
+    }
+
+    function showToast(title, message, type = 'default') {
+      const toastContainer = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-description">${message}</div>
+        </div>
+        <button class="toast-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="var(--clr-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      toastContainer.appendChild(toast);
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => {
+          toastContainer.removeChild(toast);
+        }, 300);
+      });
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.style.animation = 'fadeOut 0.3s forwards';
+          setTimeout(() => {
+            if (toast.parentNode) {
+              toastContainer.removeChild(toast);
+            }
+          }, 300);
+        }
+      }, 5000);
+    }
+  });
+</script>
+  
+{% endblock %}

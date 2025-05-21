@@ -1,3 +1,4 @@
+$.fn.dataTable.ext.errMode = 'none';
 (function($) {
   'use strict';
   $(function() {

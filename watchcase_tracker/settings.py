@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'adminportal.middleware.CSPMiddleware',
+
 ]
 
 ROOT_URLCONF = 'watchcase_tracker.urls'
@@ -68,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'watchcase_tracker.context_processors.csp_nonce',  # Add this line
+
             ],
         },
     },

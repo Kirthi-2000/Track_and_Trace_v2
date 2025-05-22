@@ -1,0 +1,770 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style nonce="{{ csp_nonce }}">
+  :root {
+    --clr-primary: #126a83;      /* Teal */
+    --clr-secondary: #023E4D;    /* Deep Navy */
+    --clr-tertiary: #FF6B6B;     /* Soft Coral */
+    --clr-bg: #F5F9FA;           /* Light background */
+    --clr-surface: #FFFFFF;      /* Surface white */
+    --clr-text: #212529;         /* Default text */
+    --clr-muted: #6C757D;        /* Muted text */
+  }
+  /* Full page layout */
+  body {
+    margin: 0;
+    background: var(--clr-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--clr-text);
+    overflow-x: hidden;
+  }
+  /* Main card container */
+  .bulk-card {
+    background: var(--clr-surface);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    margin: 2rem auto;
+    max-width: 1200px;
+    overflow: hidden;
+    animation: slideIn 0.8s ease-out;
+  }
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  /* Header with animated background */
+  .card-header {
+    background: var(--clr-secondary);
+    color: var(--clr-surface);
+    padding: 0.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-header h1 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  .card-header::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 45deg, var(--clr-tertiary), var(--clr-secondary));
+    animation: spin 10s linear infinite;
+    opacity: 0.15;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  /* Lottie animation in header */
+  .header-lottie {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    width: 60px;
+    height: 60px;
+    opacity: 0.35;
+  }
+  /* Body styling */
+  .card-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .action-area {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--clr-primary);
+    color: var(--clr-primary);
+  }
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+  .btn svg.icon {
+    margin-right: 0.5rem;
+  }
+  /* Split area: Upload area & File list */
+  .upload-file-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .file-upload-area {
+    flex: 1 1 460px;
+    border: 2px dashed var(--clr-muted);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+  .file-upload-area:hover {
+    background: rgba(18,106,131,0.05);
+  }
+  .file-upload-area p {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--clr-muted);
+  }
+  .upload-link {
+    color: var(--clr-primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .lottie-upload {
+    width: 80px;
+    height: 80px;
+  }
+  .file-upload-area.dragover {
+    background: rgba(18,106,131,0.1);
+    border-color: var(--clr-primary);
+  }
+  /* File List styling */
+  .file-list {
+    flex: 1 1 300px;
+    display: grid;
+    gap: 1rem;
+  }
+  .file-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-muted);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.3s;
+    animation: fadeIn 0.5s ease-in;
+  }
+  .file-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .file-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .file-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--clr-bg);
+    color: var(--clr-primary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .file-details {
+    overflow: hidden;
+  }
+  .file-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+  .file-size {
+    font-size: 0.8rem;
+    color: var(--clr-muted);
+    margin-top: 2px;
+  }
+  .remove-file {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--clr-bg);
+    color: var(--clr-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  .remove-file:hover {
+    background: var(--clr-tertiary);
+    color: var(--clr-surface);
+  }
+  /* Data Table Section */
+  .data-table-card {
+    margin: 0rem 5px 0.5rem 3px;
+    animation: slideIn 0.8s ease-out;
+  }
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .table-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    color: var(--clr-text);
+    margin: 0;
+  }
+  .table-header h2 .icon {
+    margin-right: 0.5rem;
+  }
+  .table-container {
+    overflow-y: auto;
+    max-height: 320px;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--clr-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .data-table th,
+  .data-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+  .data-table th {
+    font-weight: 600;
+    background: var(--clr-surface);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .data-table th:hover {
+    background: var(--clr-muted);
+  }
+  .data-table td {
+    border-bottom: 1px solid var(--clr-muted);
+    transition: background 0.3s;
+  }
+  .data-table tbody tr:hover {
+    background: #f8f9fa;
+    transform: scale(1.01);
+    transition: transform 0.2s, background 0.3s;
+  }
+  /* Action Column */
+  .data-table .actions {
+    width: 80px;
+    text-align: right;
+  }
+  /* Redesigned Delete Button */
+  .btn-delete {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--clr-bg);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-delete:hover {
+    background: var(--clr-tertiary);
+    transform: scale(1.1);
+  }
+  .btn-delete .icon {
+    width: 18px;
+    height: 18px;
+    stroke: var(--clr-text);
+    stroke-width: 2;
+  }
+  .cell-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--clr-primary);
+    border-radius: 6px;
+  }
+  .cell-input:focus { outline: none; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .table-row-animation { animation: fadeIn 0.5s ease-in; }
+
+  /* Override any row gutter padding for the card-header so it touches the bulk-card edges */
+  .bulk-card > .card-header {
+    margin-left: -14px !important;
+    margin-right: -14px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  /* Then add inner padding if desired to the header-content */
+  .header-content {
+    padding: 1rem 1rem; /* Adjust as needed */
+  }
+  @media (max-width: 425px) {
+  .card-header h1{
+    font-size: 12px !important;
+  }
+  .btn-outline{
+    padding: 0.5rem 0.5rem !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+  }
+  }
+</style>
+
+<div class="bulk-card">
+  <div class="card-header" style="
+  background: url('{% static 'assets/images/banner.jpg' %}') no-repeat center center;
+  background-size: cover;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding: 1.5rem 1rem;
+">
+  <!-- Optional overlay for darkening the banner -->
+  <div style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgb(2 62 77 / 80%);
+      z-index: 1;
+  "></div>
+  
+  <div class="header-content" style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;">
+    <h1 class="heading-title">
+      Day Planning / Bulk Upload
+    </h1>
+  </div>
+  
+  <!-- Add Model Button over the banner image -->
+  <button id="add-model-btn" class="btn btn-outline" style="
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid var(--clr-primary);
+    background: #fff;
+    color: var(--clr-primary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  ">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="3" y1="15" x2="21" y2="15"/>
+          <line x1="9" y1="3" x2="9" y2="21"/>
+          <line x1="15" y1="3" x2="15" y2="21"/>
+        </svg>
+    Single Upload
+  </button>
+  
+  <!-- Optional bottom bar -->
+  <div class="header-bottom" style="
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, #023E4D, #126a83);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    z-index: 2;
+  "></div>
+</div>
+  <!-- Card Body content follows -->
+  <div class="card-body">
+    <div class="upload-file-area">
+      <!-- Drag & Drop File Upload -->
+      <div class="file-upload-area" id="file-upload-area">
+        <p>Drag and drop Excel files here or <span class="upload-link">Click to Select</span></p>
+        <div class="lottie-upload">
+          <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json" background="transparent" speed="1" loop autoplay></lottie-player>
+        </div>
+        <input type="file" id="file-upload" accept=".xlsx,.xls" multiple hidden>
+      </div>
+      <!-- File List -->
+      <div id="file-list" class="file-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="data-table-section" class="card data-table-card" style="display:none;">
+  <div class="card-body">
+    <div class="table-header">
+      <h2>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+          <rect x="3" y="3" width="16" height="16" rx="2" ry="2"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="3" y1="15" x2="21" y2="15"/>
+          <line x1="9" y1="3" x2="9" y2="21"/>
+          <line x1="15" y1="3" x2="15" y2="21"/>
+        </svg>
+        Data Table
+      </h2>
+    </div>
+    <div class="table-container" id="data-table-container"></div>
+  </div>
+</div>
+</div>
+<div id="toast-container" class="toast-container"></div>
+
+<script nonce="{{ csp_nonce }}">
+  document.addEventListener('DOMContentLoaded', () => {
+    const fileUploadInput = document.getElementById('file-upload');
+    const fileListContainer = document.getElementById('file-list');
+    const addModelButton = document.getElementById('add-model-btn');
+    const dataTableSection = document.getElementById('data-table-section');
+    const dataTableContainer = document.getElementById('data-table-container');
+    const fileUploadArea = document.getElementById('file-upload-area');
+
+    let files = [];
+    let tableData = [];
+    let columns = ['ID', 'Stock No', 'Model', 'Plating Color', 'Quantity', 'S Loc'];
+    let sortColumn = null;
+    let sortDirection = 'asc';
+
+    fileUploadInput.addEventListener('change', handleFileSelect);
+    addModelButton.addEventListener('click', handleAddModel);
+
+    function createEmptyRow() {
+      return {
+        ID: String(tableData.length + 1),
+        'Stock No': '',
+        Model: '',
+        'Plating Color': '',
+        Quantity: '',
+        'S Loc': ''
+      };
+    }
+
+    function handleFileSelect(e) {
+      const selectedFiles = Array.from(e.target.files);
+      if (!selectedFiles.length) return;
+      const validFiles = selectedFiles.filter(file => {
+        const type = file.type;
+        return type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+               type === 'application/vnd.ms-excel';
+      });
+      if (validFiles.length !== selectedFiles.length) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid file format',
+          text: 'Please upload only Excel files (.xlsx, .xls)',
+        });
+        return;
+      }
+      files = [...files, ...validFiles];
+      renderFileList();
+      tableData = generateMockData();
+      dataTableSection.style.display = 'block';
+      renderTable();
+      Swal.fire({
+        icon: 'success',
+        title: 'File added',
+        text: 'Your Excel file has been successfully uploaded.'
+      });
+      // Clear the file input to allow re-upload of the same file(s)
+      e.target.value = '';
+    }
+
+    function handleAddModel() {
+      tableData = [createEmptyRow()];
+      dataTableSection.style.display = 'block';
+      renderTable();
+      Swal.fire({
+        icon: 'success',
+        title: 'New model added',
+        text: 'Empty table displayed for new model'
+      });
+    }
+
+    function renderFileList() {
+      fileListContainer.innerHTML = '';
+      if (!files.length) return;
+      files.forEach((file, index) => {
+        const fileCard = document.createElement('div');
+        fileCard.className = 'file-card';
+        fileCard.innerHTML = `
+          <div class="file-info">
+            <div class="file-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <div class="file-details">
+              <div class="file-name" title="${file.name}">${file.name}</div>
+              <div class="file-size">${formatFileSize(file.size)}</div>
+            </div>
+          </div>
+          <button class="remove-file" data-index="${index}" aria-label="Remove file">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--clr-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        `;
+        fileListContainer.appendChild(fileCard);
+        // Use confirmation before removal
+        fileCard.querySelector('.remove-file').addEventListener('click', () => confirmRemoveFile(index));
+      });
+    }
+
+    function confirmRemoveFile(index) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you really want to remove this file?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleRemoveFile(index);
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'File has been removed successfully.'
+          });
+        }
+      });
+    }
+
+    function handleRemoveFile(index) {
+      files = files.filter((_, i) => i !== index);
+      renderFileList();
+      // Hide the data table section if no files remain
+      if (files.length === 0) {
+        dataTableSection.style.display = 'none';
+      }
+    }
+
+    function renderTable() {
+      if (!tableData.length) {
+        dataTableContainer.innerHTML = `
+          <div class="empty-table">
+            <p>No data available</p>
+            <p>Upload an Excel file or click "Add Model (Table)" to start</p>
+          </div>
+        `;
+        return;
+      }
+      let sortedData = [...tableData];
+      if (sortColumn) {
+        sortedData.sort((a, b) => {
+          if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1;
+          if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
+      const table = document.createElement('table');
+      table.className = 'data-table';
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      columns.forEach(column => {
+        const th = document.createElement('th');
+        th.innerHTML = `${column} ${sortColumn === column ? `<span class="sort-icon">${sortDirection === 'asc' ? '↑' : '↓'}</span>` : ''}`;
+        th.addEventListener('click', () => handleSort(column));
+        headerRow.appendChild(th);
+      });
+      const actionsTh = document.createElement('th');
+      actionsTh.className = 'actions';
+      actionsTh.textContent = 'Actions';
+      headerRow.appendChild(actionsTh);
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      sortedData.forEach((row, rowIndex) => {
+        const tr = document.createElement('tr');
+        tr.classList.add('table-row-animation');
+        columns.forEach(column => {
+          const td = document.createElement('td');
+          if (column === 'ID') { td.textContent = row[column]; }
+          else {
+            td.className = 'editable-cell';
+            td.textContent = row[column];
+            td.addEventListener('click', () => {
+              const currentValue = row[column] || '';
+              const input = document.createElement('input');
+              input.className = 'cell-input';
+              input.value = currentValue;
+              td.textContent = '';
+              td.appendChild(input);
+              input.focus();
+              const handleBlur = () => {
+                row[column] = input.value;
+                td.textContent = input.value;
+                input.removeEventListener('blur', handleBlur);
+                input.removeEventListener('keydown', handleKeydown);
+              };
+              const handleKeydown = (e) => {
+                if (e.key === 'Enter') handleBlur();
+                else if (e.key === 'Escape') td.textContent = currentValue;
+              };
+              input.addEventListener('blur', handleBlur);
+              input.addEventListener('keydown', handleKeydown);
+            });
+          }
+          tr.appendChild(td);
+        });
+        const actionsTd = document.createElement('td');
+        actionsTd.className = 'actions';
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn-delete';
+        deleteButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--clr-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon btn-delete-icon">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+        `;
+        deleteButton.addEventListener('click', () => handleDeleteRow(rowIndex));
+        actionsTd.appendChild(deleteButton);
+        tr.appendChild(actionsTd);
+        tbody.appendChild(tr);
+      });
+      // Extra row for new row creation (Excel-like add row)
+      const addRowTR = document.createElement('tr');
+      const addRowTD = document.createElement('td');
+      addRowTD.colSpan = columns.length + 1;
+      addRowTD.style.textAlign = 'center';
+      addRowTD.style.cursor = 'pointer';
+      addRowTD.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="var(--clr-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      `;
+      addRowTD.addEventListener('click', () => {
+        tableData.push(createEmptyRow());
+        renderTable();
+      });
+      addRowTR.appendChild(addRowTD);
+      tbody.appendChild(addRowTR);
+      table.appendChild(tbody);
+      dataTableContainer.innerHTML = '';
+      dataTableContainer.appendChild(table);
+    }
+
+    function handleSort(column) {
+      sortDirection = sortColumn === column && sortDirection === 'asc' ? 'desc' : 'asc';
+      sortColumn = column;
+      renderTable();
+    }
+
+    function formatFileSize(bytes) {
+      if (!bytes) return '0 Bytes';
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(1024));
+      return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+    }
+
+    function generateMockData() {
+      return Array.from({ length: 10 }, (_, i) => ({
+        ID: String(i + 1),
+        'Stock No': `Stock ${i + 1}`,
+        Model: `Model ${i + 1}`,
+        'Plating Color': ['Silver', 'Gold', 'Black'][i % 3],
+        Quantity: 10 + i,
+        'S Loc': `Loc ${i + 1}`
+      }));
+    }
+
+    function handleDeleteRow(index) {
+      tableData.splice(index, 1);
+      renderTable();
+      Swal.fire({
+        icon: 'success',
+        title: 'Row deleted',
+        text: 'Row removed successfully'
+      });
+    }
+
+    function showToast(title, message, type = 'default') {
+      const toastContainer = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-description">${message}</div>
+        </div>
+        <button class="toast-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="var(--clr-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      toastContainer.appendChild(toast);
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => toastContainer.removeChild(toast), 300);
+      });
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.style.animation = 'fadeOut 0.3s forwards';
+          setTimeout(() => { if (toast.parentNode) toastContainer.removeChild(toast); }, 300);
+        }
+      }, 5000);
+    }
+
+    // Drag & Drop events
+    fileUploadArea.addEventListener('click', () => fileUploadInput.click());
+    fileUploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.add('dragover');
+    });
+    fileUploadArea.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.remove('dragover');
+    });
+    fileUploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.remove('dragover');
+      const droppedFiles = e.dataTransfer.files;
+      fileUploadInput.files = droppedFiles;
+      const changeEvent = new Event('change');
+      fileUploadInput.dispatchEvent(changeEvent);
+    });
+  });
+</script>
+  
+{% endblock %}

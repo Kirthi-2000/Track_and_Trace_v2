@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
     'modelmasterapp',
     'adminportal',
+    'Day_Planning',
+    'Input_Screening',
     'rest_framework',
     'csp',
 ]

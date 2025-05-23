@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('modelmaster/',include('modelmasterapp.urls')),
     path('adminportal/',include('adminportal.urls')),
+    path('day_planning/',include('Day_Planning.urls')),
+    path('input_screening/',include('Input_Screening.urls')),
 
 
 ]

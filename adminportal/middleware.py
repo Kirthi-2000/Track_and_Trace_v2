@@ -11,19 +11,11 @@ class CSPMiddleware:
         response = self.get_response(request)
         response['Content-Security-Policy'] = (
             "default-src 'self'; "
-<<<<<<< HEAD
             f"script-src 'self' 'nonce-{nonce}' https://unpkg.com https://cdn.jsdelivr.net/npm/sweetalert2@11 'strict-dynamic';"
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
             "font-src 'self' https://*.lottiefiles.com https://fonts.gstatic.com https://cdnjs.cloudflare.com https://demo.bootstrapdash.com;"
             "img-src 'self' https://assets2.lottiefiles.com/packages/lf20_uiyqFZ.json https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json https://demo.bootstrapdash.com/skydash/themes/assets/images/logo-mini.svg https://demo.bootstrapdash.com/skydash/themes/assets/images/logo.svg https://demo.bootstrapdash.com/skydash/themes/assets/images/dashboard/people.svg data:; "
             "connect-src 'self' https://assets2.lottiefiles.com/packages/lf20_uiyqFZ.json https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json;"            
-=======
-            f"script-src 'self' 'nonce-{nonce}' https://unpkg.com 'strict-dynamic'; "
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
-            "font-src 'self' https://assets10.lottiefiles.com/packages/lf20_49rdyysj.json https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
-            "img-src 'self' https://assets10.lottiefiles.com/packages/lf20_49rdyysj.json https://demo.bootstrapdash.com/skydash/themes/assets/images/logo-mini.svg https://demo.bootstrapdash.com/skydash/themes/assets/images/logo.svg https://demo.bootstrapdash.com/skydash/themes/assets/images/dashboard/people.svg data:; "
-            "connect-src 'self' https://assets10.lottiefiles.com/packages/lf20_49rdyysj.json;"            
->>>>>>> 6a115c35b015e2066e771829a77eab252b59303b
             "frame-src 'self'; "
             "object-src 'none'; "
             "base-uri 'self';"

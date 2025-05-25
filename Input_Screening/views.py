@@ -7,3 +7,7 @@ from django.shortcuts import render
 class IS_PickTable(APIView):
     def get(self, request):
         return render(request, 'Input_Screening/IS_PickTable.html')
+    
+class IS_RejectTable(APIView):
+    def get(self, request):
+        return render(request, 'Input_Screening/IS_RejectTable.html')

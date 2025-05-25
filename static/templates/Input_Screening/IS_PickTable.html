@@ -74,22 +74,13 @@
   #trayScanDetails.table-grid {
     display: grid !important; /* override any existing grid or flex */
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 10px !important;
+    gap: 0px !important;
     max-height: 300px !important;
     overflow-y: auto !important;
     padding-right: 10px; /* prevent scrollbar overlay */
     margin-top: 10px;
   }
-  /* Styling individual grid cells, only inside trayScanDetails */
-  #trayScanDetails.table-grid > div {
-    background: #f7f7f7;
-    padding: 8px 12px;
-    border-radius: 30px;
-    font-size: 12px;
-    border: 1px solid #ddd;
-    margin: 0; /* reset any margin from 
-   <p> or others */
-  }
+ 
   /* Sticky header row: first 3 divs inside trayScanDetails */
   #trayScanDetails.table-grid > div:nth-child(-n + 3) {
     background-color: #e0e0e0;
@@ -191,7 +182,7 @@
   }
   @media (min-width: 1025px) {
     .table-responsive {
-      max-height: 300px;
+      max-height: 100%;
     }
   }
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -200,7 +191,7 @@
     }
   }
   .table-responsive {
-    max-height: 250px;
+    max-height: 100%;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -260,11 +251,88 @@
     margin-right: 0.5rem !important;
     padding: 0.3rem !important;
   }
+  /* Modal styles */
+  .image-slider-modal {
+    display: none;
+    position: fixed;
+    top: 40px; /* Leaves room at the top */
+    right: 20px;
+    width: 600px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 20px;
+    z-index: 10000;
+    transition: right 0.3s ease;
+  }
+  .image-slider-modal.open {
+    display: block;
+  }
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  .modal-close:hover {
+    color: #333;
+  }
+  /* Slider styles */
+  .slider {
+    position: relative;
+    overflow: hidden;
+    height: 350px;
+  }
+  .slides {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+  .slide {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    display: none;
+  }
+  .slide.active {
+    display: block;
+  }
+  .slide img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+  }
+  .prev,
+  .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    user-select: none;
+  }
+  .prev { left: 10px; }
+  .next { right: 10px; }
+  @media (max-width: 767px) {
+    .image-slider-modal {
+      width: 100%;
+      right: 0;
+      top: 0;
+      border-radius: 0;
+      padding: 10px;
+    }
+    .slider { height: 250px; }
+    .slide img { height: 250px; }
+  }
 </style>
+
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">
-    Input Screening / Input Screening Pick Table
-  </h5>
+  <h5 class="text-left mt-0 mb-3">Input Screening / Input Screening Pick Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -344,7 +412,24 @@
                   <tr class="highlighted-tray-scan">
                     <td>1</td>
                     <td>2025-05-22 10:00 AM</td>
-                    <td>1805</td>
+                    <!-- Model/Stock No - Image hover -->  
+                    <td style="position: relative;">
+                      <span class="model-hover-trigger" style="cursor: pointer;">1805
+                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
+                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
+                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+
+                          </div>
+
+
+                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
+                        </div>
+                      </span>
+                    </td>
                     <td>ISP</td>
                     <td>A - Buffed</td>
                     <td>A</td>
@@ -1169,7 +1254,7 @@
                   <span id="closeTrayScanModal" class="tray-scan-close"
                     >&times;</span
                   >
-                  <h3>Tray Scan Details</h3>
+                  <h3>Tray Scan Details:</h3><p>Input Screening / Model No. / Rejection Window </p>
                   <div id="trayScanDetails">
                     <!-- Dynamic content will be loaded here -->
                   </div>
@@ -1206,92 +1291,52 @@
                         "
                       />
                       <span>Model No:</span>
-                      <h6>(Fetch Dynamically)</h6>
+                      <h6>(Fetch Dynamically) / Accepted Tray Rescan</h6>
                     </div>
                   </div>
                   <!-- Existing centered h3 title -->
                   <h5 style="text-align: center">
                     Input Screening - Accepted case tray scan table
                   </h5>
-                  <!-- trayScanDetails will be a scrollable 3-column grid with headers and unlimited rows -->
+                  <!-- Accepted Case Tray Scan Table - Grid View with Visible Borders -->
                   <div id="trayScanDetails" class="table-grid">
-                    <div>S.no</div>
-                    <div>Tray ID</div>
-                    <div>Tray Qty</div>
-                    <div>1</div>
-                    <div>Tray001</div>
-                    <div
-                      style="
-                        display: flex;
-                        align-items: center;
-                        gap: 4px;
-                        width: 50px;
-                        margin-right: 35px;
-                      "
-                    >
-                      <div>10</div>
-                      <div style="margin-left: 30px; display: flex; gap: 4px">
-                        <img
-                          src="/static/assets/icons/edit2.png"
-                          alt="Edit"
-                          style="width: 15px; height: 15px; cursor: pointer"
-                        />
-                        <img
-                          src="/static/assets/icons/bin.png"
-                          alt="Delete"
-                          style="width: 15px; height: 15px; cursor: pointer"
-                        />
+                    <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">S.no</div>
+                    <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray ID</div>
+                    <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray Qty</div>
+
+                    <div style="border: 1px solid #ccc; padding: 8px;">1</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">Tray001</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">
+                      <div style="display: flex; align-items: center; gap: 14px;">
+                        <span>10</span>
+                        <div style="display: flex; gap: 4px;">
+                          <input type="checkbox" style="width: 15px; height: 15px; cursor: pointer;" />
+                          <img src="/static/assets/icons/edit2.png" alt="Edit" style="width: 15px; height: 15px; cursor: pointer;" />
+                        </div>
                       </div>
                     </div>
-                    <div>2</div>
-                    <div>Tray002</div>
-                    <div>20</div>
-                    <div>3</div>
-                    <div>Tray003</div>
-                    <div>15</div>
-                    <div>4</div>
-                    <div>Tray004</div>
-                    <div>15</div>
+
+                    <div style="border: 1px solid #ccc; padding: 8px;">2</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">Tray002</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">20</div>
+
+                    <div style="border: 1px solid #ccc; padding: 8px;">3</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">Tray003</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">15</div>
+
+                    <div style="border: 1px solid #ccc; padding: 8px;">4</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">Tray004</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">15</div>
+
                     <!-- NEW BUTTONS SECTION -->
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: center;
-                        gap: 10px;
-                        margin-top: 20px;
-                      "
-                    >
-                      <button
-                        style="
-                          padding: 8px 16px;
-                          background: #007bff;
-                          color: white;
-                          border: none;
-                          border-radius: 30px;
-                        "
-                      >
+                    <div style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                      <a href="{% url 'IS_PickTable' %}" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 30px;">
                         Draft
-                      </button>
-                      <button
-                        style="
-                          padding: 8px 16px;
-                          background: #28a745;
-                          color: white;
-                          border: none;
-                          border-radius: 30px;
-                        "
-                      >
+                      </a>
+                      <a href="{% url 'IS_PickTable' %}" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;">
                         Submit
-                      </button>
-                      <button
-                        style="
-                          padding: 8px 16px;
-                          background: #dc3545;
-                          color: white;
-                          border: none;
-                          border-radius: 30px;
-                        "
-                      >
+                      </a>
+                      <button style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
                         Cancel
                       </button>
                     </div>
@@ -1299,6 +1344,7 @@
                 </div>
               </div>
             </div>
+            
             <!-- Pagination Section -->
             <div class="pagination-wrapper">
               <nav aria-label="Page navigation">
@@ -1318,6 +1364,35 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <!-- Image Slider Modal (popup) -->
+  <div id="imageSliderModal" class="image-slider-modal">
+    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <h3>Visual Aid</h3>
+    <div class="slider" id="slider">
+      <div class="slides" id="slidesContainer">
+        <div class="slide active">
+          <img src="{% static 'assets/images/carousel/banner_1.jpg' %}" alt="Slide 1">
+        </div>
+        <div class="slide">
+          <img src="{% static 'assets/images/carousel/banner_2.jpg' %}" alt="Slide 2">
+        </div>
+        <div class="slide">
+          <img src="{% static 'assets/images/carousel/banner_3.jpg' %}" alt="Slide 3">
+        </div>
+      </div>
+      <button class="prev" id="prevBtn">&#10094;</button>
+      <button class="next" id="nextBtn">&#10095;</button>
+    </div>
+  </div>
+  <!-- Image Slider Modal -->
+  <div id="imageSliderModal" class="image-slider-modal">
+    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <div class="slider" id="slider">
+      <button class="prev" id="prevBtn">&#8592;</button>
+      <div class="slides"></div>
+      <button class="next" id="nextBtn">&#8594;</button>
     </div>
   </div>
   {% block script %}
@@ -1450,10 +1525,36 @@
            </table>
          </div>
           <br>
-           <div>
-               <button id="proceedButton" class="btn btn-success" style="padding-top: 10px;">Proceed</button>
-             <button class="btn btn-danger">Cancel</button>
-           </div>
+           <div
+                      style="
+                        display: flex;
+                        justify-content: center;
+                        gap: 10px;
+                        margin-top: 20px;
+                      "
+                    >
+                    <button id="proceedButton" style="
+                          padding: 8px 16px;
+                          background: #28a745;
+                          color: white;
+                          border: none;
+                          border-radius: 30px;
+                        "
+                      >
+                        Proceed
+                      </button>
+                      <button style="
+                          padding: 8px 16px;
+                          background: #dc3545;
+                          color: white;
+                          border: none;
+                          border-radius: 30px;
+                        "
+                      >
+                        Cancel
+                      </button>
+                    </div>
+           
          `;
 
           trayModal.classList.add("open");
@@ -1547,5 +1648,137 @@
       });
     });
   </script>
-  {% endblock %} {% endblock content %}
+  <!-- Image Slider Script -->
+  <!-- Script for Model / Stock No - Image Mouse Hover -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.model-hover-trigger').forEach(function(trigger) {
+    const tooltip = trigger.querySelector('.model-image-tooltip');
+    let currentIndex = 0;
+    let tooltipPinned = false;
+    const images = Array.from(tooltip.querySelectorAll('.img-gallery img'));
+
+    function showImages(start) {
+      images.forEach((img, i) => {
+        img.style.display = (i >= start && i < start + 3) ? 'block' : 'none';
+      });
+    }
+    showImages(currentIndex);
+
+    trigger.addEventListener('mouseenter', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '1';
+        tooltip.style.pointerEvents = 'auto';
+      }
+    });
+    trigger.addEventListener('mouseleave', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '0';
+        tooltip.style.pointerEvents = 'none';
+      }
+    });
+    tooltip.addEventListener('mouseenter', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '1';
+        tooltip.style.pointerEvents = 'auto';
+      }
+    });
+    tooltip.addEventListener('mouseleave', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '0';
+        tooltip.style.pointerEvents = 'none';
+      }
+    });
+
+    // Pin tooltip on click
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      tooltipPinned = true;
+      tooltip.style.opacity = '1';
+      tooltip.style.pointerEvents = 'auto';
+    });
+
+    // Unpin tooltip if user clicks outside
+    document.addEventListener('mousedown', function(e) {
+      if (!trigger.contains(e.target) && !tooltip.contains(e.target)) {
+        tooltipPinned = false;
+        tooltip.style.opacity = '0';
+        tooltip.style.pointerEvents = 'none';
+      }
+    });
+
+    tooltip.querySelector('.img-scroll-left').addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (currentIndex > 0) {
+        currentIndex--;
+        showImages(currentIndex);
+      }
+    });
+    tooltip.querySelector('.img-scroll-right').addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (currentIndex < images.length - 3) {
+        currentIndex++;
+        showImages(currentIndex);
+      }
+    });
+
+    // Add click event to images for modal slider
+    images.forEach(function(img, idx) {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openImageSlider(images.map(i => i.src), idx);
+      });
+    });
+  });
+
+  // Modal slider functions
+  const modal = document.getElementById("imageSliderModal");
+  const closeModal = document.getElementById("closeImageSliderModal");
+  const slidesContainer = modal.querySelector(".slides");
+  let sliderImages = [];
+  let currentSlide = 0;
+
+  function openImageSlider(srcArray, startIdx) {
+    sliderImages = srcArray;
+    slidesContainer.innerHTML = '';
+    sliderImages.forEach(src => {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      const img = document.createElement('img');
+      img.src = src;
+      slide.appendChild(img);
+      slidesContainer.appendChild(slide);
+    });
+    currentSlide = startIdx;
+    showSlide(currentSlide);
+    modal.classList.add('open');
+  }
+
+  function showSlide(n) {
+    const slides = slidesContainer.querySelectorAll('.slide');
+    if (!slides.length) return;
+    currentSlide = (n + slides.length) % slides.length;
+    slides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === currentSlide);
+    });
+  }
+
+  modal.querySelector("#prevBtn").addEventListener("click", function(e) {
+    e.stopPropagation();
+    showSlide(currentSlide - 1);
+  });
+  modal.querySelector("#nextBtn").addEventListener("click", function(e) {
+    e.stopPropagation();
+    showSlide(currentSlide + 1);
+  });
+  closeModal.addEventListener("click", function() {
+    modal.classList.remove("open");
+  });
+  modal.addEventListener("click", function(e) {
+    if (e.target === modal) modal.classList.remove("open");
+  });
+});
+</script>
+{% endblock %} {% endblock content %}
 </div>

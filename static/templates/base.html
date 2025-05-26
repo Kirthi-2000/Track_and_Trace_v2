@@ -48,6 +48,17 @@
     z-index: 10;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
   }
+  .sidebar .nav-link {
+  white-space: normal !important;
+  word-break: break-word;
+  line-height: 1.2;
+  text-overflow: initial;
+  overflow-wrap: anywhere;
+  overflow: visible;
+  display: block;
+  width: 100%;
+  padding-right: 10px;
+}
       .barcode-img-preview {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: zoom-in;
@@ -412,6 +423,9 @@
           padding: 12px 2vw 12px 2vw;
         }
       }
+      .footer {
+        z-index: 10;
+      }
     </style>
 </head>
 
@@ -751,7 +765,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
-              <i class="icon-watch menu-icon"></i>
+              <i class="fa fa-search menu-icon"></i>
               <span class="menu-title">Input Screening</span>
               <i class="menu-arrow"></i>
             </a>
@@ -761,10 +775,32 @@
                   <a class="nav-link" href="{% url 'IS_PickTable' %}">Pick Table</a>
                 </li>
                 <li class="nav-item"> 
-                  <a class="nav-link" href="#">Accept</a>
+                  <a class="nav-link" href="{% url 'IS_AcceptTable' %}">Accept</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'IS_RejectTable' %}">Reject</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <span class="menu-title" style="font-size: 10px; padding: 4px; font-weight: 600;">Recovery Module</span>
+
+           <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="ui-advanced">
+              <i class="fa fa-recycle menu-icon"></i>
+              <span class="menu-title">Recovery Input Screening</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> 
+                  <a class="nav-link" href="{% url 'Recovery_IS_PickTable' %}">Pick Table</a>
+                </li>
+                <li class="nav-item"> 
+                  <a class="nav-link" href="{% url 'Recovery_IS_AcceptTable' %}">Accept</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'Recovery_IS_RejectTable' %}">Reject</a>
                 </li>
               </ul>
             </div>

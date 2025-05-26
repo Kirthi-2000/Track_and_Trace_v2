@@ -331,7 +331,7 @@
 </style>
 
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">Input Screening / Pick Table</h5>
+  <h5 class="text-left mt-0 mb-3">Recovery Input Screening / Accepted Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -375,12 +375,9 @@
                     <th>
                       No of Tray <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
+        
                     <th>
-                      LOT Quantity
-                      <i class="fa fa-filter" aria-hidden="true"></i>
-                    </th>
-                    <th>
-                      Physical Quantity
+                      Accepted Quantity
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
@@ -435,39 +432,7 @@
                     <td>Nil</td>
                     <td>Normal 16</td>
                     <td>10</td>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <span style="min-width: 30px; text-align: right"
-                          >50</span
-                        >
-                        <input
-                          type="checkbox"
-                          style="width: 15px; height: 15px"
-                        />
-                        <input
-                          type="text"
-                          value="50"
-                          style="
-                            width: 60px;
-                            padding: 2px 4px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                          "
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value="50"
-                        style="
-                          width: 60px;
-                          padding: 2px 4px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                        "
-                      />
-                    </td>
+                    <td>50</td>
                     <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
@@ -508,7 +473,7 @@
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #c3c2c2;
+                            background-color: #0c8249;
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -525,7 +490,7 @@
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #c3c2c2;
+                            background-color: #0c8249;
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -705,64 +670,47 @@
                     </td>
                   </tr>
                   <!-- Row 2 -->
-                  <tr>
-                    <td>2</td>
+                  <tr class="highlighted-tray-scan">
+                    <td>1</td>
                     <td>2025-05-22 10:00 AM</td>
-                    <td>2565</td>
+                    <!-- Model/Stock No - Image hover -->  
+                    <td style="position: relative;">
+                      <span class="model-hover-trigger" style="cursor: pointer;">1805
+                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
+                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
+                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+
+                          </div>
+
+
+                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
+                        </div>
+                      </span>
+                    </td>
                     <td>ISP</td>
                     <td>A - Buffed</td>
                     <td>A</td>
                     <td>Nil</td>
-                    <td>Jumbo 14</td>
+                    <td>Normal 16</td>
                     <td>10</td>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <span style="min-width: 30px; text-align: right"
-                          >50</span
-                        >
-                        <input
-                          type="checkbox"
-                          style="width: 15px; height: 15px"
-                          disabled
-                        />
-                        <input
-                          type="text"
-                          value="-"
-                          style="
-                            width: 60px;
-                            padding: 2px 4px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                          "
-                          disabled
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value="-"
-                        style="
-                          width: 60px;
-                          padding: 2px 4px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                        "
-                      />
-                    </td>
+                    <td>50</td>
                     <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                         style="
-                          border: 2px solid #5d0d0d;
-                          background-color: #f9c2c2;
-                          color: #801b1b;
+                          border: 2px solid #0d5d17;
+                          background-color: #c5f9c2;
+                          color: #2f801b;
                           font-size: clamp(0.3rem, 2vw, 0.875rem);
                           white-space: nowrap;
                           padding: 0.3rem;
                         "
                       >
-                        No
+                        Yes
                       </div>
                     </td>
                     <td>
@@ -773,7 +721,7 @@
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #c3c2c2;
+                            background-color: #0c8249;
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -790,7 +738,7 @@
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #c3c2c2;
+                            background-color: #0c8249;
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -800,6 +748,23 @@
                           "
                         >
                           S
+                        </div>
+                        <div
+                          title="Tray Scan"
+                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            background-color: #0c8249;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 20px;
+                            text-align: center;
+                            padding-top: 1px;
+                            padding-right: 1px;
+                          "
+                        >
+                          W
                         </div>
                       </div>
                     </td>
@@ -823,28 +788,33 @@
                         class="btn btn-social-icon-text btn-twitter"
                         style="background-color: #66bb6a"
                       >
-                        <i class="fa fa-check-circle"></i>Accept
+                        <i class="fa fa-check-circle"></i>Accepted
                       </button>
                       <button
                         type="button"
-                        class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                        class="btn btn-social-icon-text btn-youtube"
+                        style="background-color: #9e9e9e"
                       >
-                        <i class="fa fa-close"></i>Reject
+                        <i
+                          class="fa fa-close"
+                          style="background-color: #6b6a6a"
+                        ></i
+                        >Reject
                       </button>
                     </td>
                     <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                         style="
-                          border: 2px solid #4997ac;
-                          background-color: #d1f2f3;
-                          color: #03425d;
+                          border: 2px solid #0d5d17;
+                          background-color: #c5f9c2;
+                          color: #2f801b;
                           font-size: clamp(0.3rem, 2vw, 0.875rem);
                           white-space: nowrap;
                           padding: 0.3rem;
                         "
                       >
-                        On-Hold
+                        Released
                       </div>
                     </td>
                     <td>
@@ -863,8 +833,7 @@
                       </div>
                     </td>
                     <td>
-                      <!-- VoiceRec with tooltip (audio remark) -->
-                        <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
+                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
                           <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
                           <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
                             <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
@@ -882,7 +851,6 @@
                             </div>
                           </div>
                         </a>
-
                       <a
                         href="#"
                         title="Add Remark"
@@ -967,49 +935,34 @@
                     </td>
                   </tr>
                   <!-- Row 3 (new, same static data) -->
-                  <tr>
-                    <td>3</td>
+                  <tr class="highlighted-tray-scan">
+                    <td>1</td>
                     <td>2025-05-22 10:00 AM</td>
-                    <td>7346</td>
+                    <!-- Model/Stock No - Image hover -->  
+                    <td style="position: relative;">
+                      <span class="model-hover-trigger" style="cursor: pointer;">1805
+                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
+                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
+                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+
+                          </div>
+
+
+                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
+                        </div>
+                      </span>
+                    </td>
                     <td>ISP</td>
                     <td>A - Buffed</td>
                     <td>A</td>
                     <td>Nil</td>
-                    <td>Jumbo 14</td>
+                    <td>Normal 16</td>
                     <td>10</td>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <span style="min-width: 30px; text-align: right"
-                          >50</span
-                        >
-                        <input
-                          type="checkbox"
-                          style="width: 15px; height: 15px"
-                        />
-                        <input
-                          type="text"
-                          value="50"
-                          style="
-                            width: 60px;
-                            padding: 2px 4px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                          "
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value="50"
-                        style="
-                          width: 60px;
-                          padding: 2px 4px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                        "
-                      />
-                    </td>
+                    <td>50</td>
                     <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
@@ -1050,7 +1003,7 @@
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #c3c2c2;
+                            background-color: #0c8249;
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -1067,7 +1020,7 @@
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #c3c2c2;
+                            background-color: #0c8249;
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -1098,19 +1051,20 @@
                       <button
                         type="button"
                         class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #9e9e9e"
+                        style="background-color: #66bb6a"
                       >
-                        <i
-                          class="fa fa-check-circle"
-                          style="background-color: #6b6a6a"
-                        ></i
-                        >Accept
+                        <i class="fa fa-check-circle"></i>Accepted
                       </button>
                       <button
                         type="button"
                         class="btn btn-social-icon-text btn-youtube"
+                        style="background-color: #9e9e9e"
                       >
-                        <i class="fa fa-close"></i>Rejected
+                        <i
+                          class="fa fa-close"
+                          style="background-color: #6b6a6a"
+                        ></i
+                        >Reject
                       </button>
                     </td>
                     <td>

@@ -119,9 +119,7 @@
     border-radius: 6px;
     font-size: 14px;
   }
-  .highlighted-tray-scan {
-    background-color: #88c4e3 !important;
-  }
+
   /* Responsive adjustments for screens below 768px */
   @media (max-width: 767px) {
     .tray-scan-modal,
@@ -328,8 +326,15 @@
     .slider { height: 250px; }
     .slide img { height: 250px; }
   }
+  
 </style>
-
+<style id="dp-row-action-highlight-style">
+  .dp-row-action-highlight {
+    background-color: #b3e6ff !important; /* Light blue */
+    box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+</style>
 <div class="content-wrapper">
   <h5 class="text-left mt-0 mb-3">Recovery Input Screening / Pick Table</h5>
   <div class="row">
@@ -500,7 +505,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          Q
                         </div>
                         <div
                           title="Tray Scan"
@@ -517,7 +522,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          S
                         </div>
                         <div
                           title="Tray Scan"
@@ -534,7 +539,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          W
                         </div>
                       </div>
                     </td>
@@ -782,7 +787,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          Q
                         </div>
                         <div
                           title="Tray Scan"
@@ -799,7 +804,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          S
                         </div>
                       </div>
                     </td>
@@ -1042,7 +1047,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          Q
                         </div>
                         <div
                           title="Tray Scan"
@@ -1059,7 +1064,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          S
                         </div>
                         <div
                           title="Tray Scan"
@@ -1076,7 +1081,7 @@
                             padding-right: 1px;
                           "
                         >
-                          T
+                          W
                         </div>
                       </div>
                     </td>
@@ -1245,6 +1250,268 @@
                       </a>
                     </td>
                   </tr>
+                  <!-- Row 4 -->
+                  <tr>
+                    <td>2</td>
+                    <td>2025-05-22 10:00 AM</td>
+                    <td>2565</td>
+                    <td>ISP</td>
+                    <td>A - Buffed</td>
+                    <td>A</td>
+                    <td>Nil</td>
+                    <td>Jumbo 14</td>
+                    <td>10</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 8px">
+                        <span style="min-width: 30px; text-align: right"
+                          >50</span
+                        >
+                        <input
+                          type="checkbox"
+                          style="width: 15px; height: 15px"
+                          disabled
+                        />
+                        <input
+                          type="text"
+                          value="-"
+                          style="
+                            width: 60px;
+                            padding: 2px 4px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                          "
+                          disabled
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value="-"
+                        style="
+                          width: 60px;
+                          padding: 2px 4px;
+                          border: 1px solid #ccc;
+                          border-radius: 4px;
+                        "
+                      />
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #5d0d0d;
+                          background-color: #f9c2c2;
+                          color: #801b1b;
+                          font-size: clamp(0.3rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding: 0.3rem;
+                        "
+                      >
+                        No
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex">
+                        <div
+                          title="Tray Scan"
+                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            background-color: #c3c2c2;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 20px;
+                            text-align: center;
+                            padding-top: 1px;
+                            padding-right: 1px;
+                          "
+                        >
+                          Q
+                        </div>
+                        <div
+                          title="Tray Scan"
+                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            background-color: #c3c2c2;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 20px;
+                            text-align: center;
+                            padding-top: 1px;
+                            padding-right: 1px;
+                          "
+                        >
+                          S
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <button
+                        type="button"
+                        class="btn btn-social-icon-text btn-twitter"
+                        style="background-color: #66bb6a"
+                      >
+                        <i class="fa fa-check-circle"></i>Accept
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                      >
+                        <i class="fa fa-close"></i>Reject
+                      </button>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #4997ac;
+                          background-color: #d1f2f3;
+                          color: #03425d;
+                          font-size: clamp(0.3rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding: 0.3rem;
+                        "
+                      >
+                        On-Hold
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #9adeed;
+                          background-color: #d1edf3;
+                          color: #033b5d;
+                          font-size: clamp(0.3rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding: 0.3rem;
+                        "
+                      >
+                        Input Screening
+                      </div>
+                    </td>
+                    <td>
+                      <!-- VoiceRec with tooltip (audio remark) -->
+                        <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
+                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
+                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
+                            <!-- Audio recording UI placeholder -->
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa fa-microphone"></i>
+                              </button>
+                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                <i class="fa fa-send"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </a>
+
+                      <a
+                        href="#"
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="
+                          display: inline-flex;
+                          align-items: center;
+                          height: 20px;
+                          margin-left: 5px;
+                          position: relative;
+                          cursor: pointer;
+                        "
+                      >
+                        <img
+                          src="{% static 'assets/icons/chat1.png' %}"
+                          alt="Chat"
+                          style="width: 20px; height: 20px"
+                        />
+                        <div
+                          class="remark-tooltip"
+                          style="
+                            position: absolute;
+                            top: 110%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 300px;
+                            background: #fff;
+                            border: 1px solid #ccc;
+                            border-radius: 6px;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: opacity 0.3s ease, visibility 0.3s ease;
+                            padding: 15px;
+                            z-index: 1000;
+                          "
+                        >
+                          <div
+                            style="
+                              position: absolute;
+                              top: -10px;
+                              left: 50%;
+                              transform: translateX(-50%);
+                              width: 0;
+                              height: 0;
+                              border-left: 10px solid transparent;
+                              border-right: 10px solid transparent;
+                              border-bottom: 10px solid #fff;
+                            "
+                          ></div>
+                          <textarea
+                            placeholder="Type your remark..."
+                            style="
+                              width: 85%;
+                              height: 40px;
+                              resize: vertical;
+                              border: 1px solid #ccc;
+                              padding: 5px;
+                              border-radius: 4px;
+                              font-family: Arial, sans-serif;
+                              font-size: 14px;
+                            "
+                          ></textarea>
+                          <div style="text-align: right; margin-top: -35px">
+                            <button
+                              type="button"
+                              style="
+                                background-color: #007bff;
+                                color: #fff;
+                                border: none;
+                                padding: 6px 12px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 14px;
+                              "
+                            >
+                              <i class="fa fa-send"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </a>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
               <!-- Tray Scan Details Modal (Left Popup) -->
@@ -1304,7 +1571,7 @@
                     <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray Qty</div>
 
                     <div style="border: 1px solid #ccc; padding: 8px;">1</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">Tray001</div>
+                    <div style="border: 1px solid #ccc; padding: 8px;">Tray0012345</div>
                     <div style="border: 1px solid #ccc; padding: 8px;">
                       <div style="display: flex; align-items: center; gap: 14px;">
                         <span>10</span>
@@ -1328,16 +1595,19 @@
                     <div style="border: 1px solid #ccc; padding: 8px;">15</div>
 
                     <!-- NEW BUTTONS SECTION -->
-                    <div style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
-                      <a href="{% url 'IS_PickTable' %}" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 30px;">
-                        Draft
-                      </a>
-                      <a href="{% url 'IS_PickTable' %}" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;">
-                        Submit
-                      </a>
-                      <button style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
-                        Cancel
-                      </button>
+                    <div class="tray-scan-modal-buttons" style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                       <button
+                    style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 30px;">
+                    Draft
+                  </button>
+                  <button
+                    style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;">
+                    Submit
+                  </button>
+                  <button
+                    style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
+                    Cancel
+                  </button>
                     </div>
                   </div>
                 </div>
@@ -1467,7 +1737,7 @@
                  <th style="padding: 12px;">Tray</th>
              </tr>
              </thead>
-             <tbody style="border: solid 1px black; background-color: #007bff; color: #fff;">
+             <tbody style="border: solid 1px black;">
                <tr>
              <td style="padding: 10px;">1</td>
              <td style="padding: 10px;">001</td>
@@ -1831,5 +2101,145 @@ document.addEventListener('DOMContentLoaded', function() {
     renderTable(currentPage);
   });
   </script>
+  <!-- script for buttons in form & highlight -->
+
+<script nonce="{{ csp_nonce }}">
+// filepath: a:\Workspace\Track_and_Trace_v2\static\templates\Day_Planning\DP_PickTable.html
+document.addEventListener("DOMContentLoaded", function() {
+  const table = document.getElementById('order-listing');
+  const modal = document.getElementById('trayScanModal');
+  const msgBarId = 'dp-table-msg-bar';
+  let msgBar = document.getElementById(msgBarId);
+
+  // Create message bar if not present
+  if (!msgBar && table) {
+    msgBar = document.createElement('div');
+    msgBar.id = msgBarId;
+    msgBar.style.display = 'none';
+    msgBar.style.width = '100%';
+    msgBar.style.margin = '0 0 8px 0';
+    msgBar.style.padding = '10px 24px';
+    msgBar.style.background = '#d1eaff';
+    msgBar.style.color = '#0056b3';
+    msgBar.style.fontWeight = 'bold';
+    msgBar.style.borderRadius = '8px';
+    msgBar.style.fontSize = '1.1rem';
+    msgBar.style.textAlign = 'center';
+    msgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
+    table.parentNode.insertBefore(msgBar, table);
+  }
+
+  // Highlight style (if not present)
+  if (!document.getElementById('dp-row-action-highlight-style')) {
+    var style = document.createElement('style');
+    style.id = 'dp-row-action-highlight-style';
+    style.innerHTML = `
+      .dp-row-action-highlight {
+        box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
+        transition: box-shadow 9.3s;
+        background-color: #f0f8ff !important;
+        animation: highlightAnimation 2s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  const btnMsg = {
+    "Draft": "Drafted successfully",
+    "Submit": "Submitted successfully",
+    "Cancel": "Cancelled successfully"
+  };
+  const btnBg = {
+    "Draft": "#d1eaff",    // blue
+    "Submit": "#d4f7d4",   // green
+    "Cancel": "#ffd6d6"    // red
+  };
+  const btnColor = {
+    "Draft": "#0056b3",
+    "Submit": "#218838",
+    "Cancel": "#b30000"
+  };
+
+  document.querySelectorAll('.tray-scan-modal-buttons button').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      // 1. Close the modal immediately
+      if (modal) modal.classList.remove('open');
+
+      // 2. Show alert and highlight row
+      let btnText = btn.textContent.trim();
+      let msg = btnMsg[btnText] || "Action successful";
+      let bg = btnBg[btnText] || "#d1eaff";
+      let color = btnColor[btnText] || "#0056b3";
+      if (msgBar) {
+        msgBar.textContent = msg;
+        msgBar.style.display = 'block';
+        msgBar.style.opacity = '1';
+        msgBar.style.background = bg;
+        msgBar.style.color = color;
+      }
+      document.querySelectorAll('tr.highlighted-tray-scan').forEach(function(row) {
+        row.classList.add('dp-row-action-highlight');
+        setTimeout(function() {
+          row.classList.remove('dp-row-action-highlight');
+        }, 2000);
+      });
+
+      // 3. Hide alert after 2s (and redirect if needed)
+      setTimeout(function() {
+        if (msgBar) {
+          msgBar.style.opacity = '0';
+          setTimeout(function() { msgBar.style.display = 'none'; }, 300);
+        }
+        // Uncomment below if you want to redirect after alert
+        // window.location.href = "{% url 'dp_pick_table' %}";
+      }, 3000);
+    });
+  });
+});
+</script>
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  // 1. Save the active row when clicking a tray scan trigger.
+  document.querySelectorAll(".tray-scan-btn").forEach(function(btn) {
+    btn.addEventListener("click", function(e) {
+      const row = e.target.closest("tr");
+      if (row) {
+        window.activeRow = row;
+      }
+      // Open the left modal (trayScanModal) as needed.
+      const trayModal = document.getElementById("trayScanModal");
+      if (trayModal) {
+        trayModal.classList.add("open");
+      }
+    });
+  });
+
+  // 2. Attach click event handlers to popup action buttons (Draft, Submit, Cancel)
+  document.querySelectorAll('.tray-scan-modal-buttons button').forEach(function(btn) {
+    btn.addEventListener("click", function(e) {
+      e.preventDefault();
+      
+      // Close both modals
+      const newPopupModal = document.getElementById("newPopupModal");
+      const trayScanModal = document.getElementById("trayScanModal");
+      if (newPopupModal) newPopupModal.classList.remove("open");
+      if (trayScanModal) trayScanModal.classList.remove("open");
+
+      // Highlight the active row for a few seconds.
+      document.querySelectorAll('#order-listing tbody tr').forEach(function(row) {
+  row.classList.remove("dp-row-action-highlight");
+});
+
+if (window.activeRow) {
+  window.activeRow.classList.add("dp-row-action-highlight");
+  setTimeout(() => {
+    window.activeRow.classList.remove("dp-row-action-highlight");
+  }, 2000);
+}
+    });
+  });
+});
+</script>
 {% endblock %} {% endblock content %}
-</div>

@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'watchcase_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'watchcase_tracker',
+        'NAME': 'watch_tracker',
         'USER':'postgres',
         'PASSWORD':'postgres',
         'HOST':'localhost',

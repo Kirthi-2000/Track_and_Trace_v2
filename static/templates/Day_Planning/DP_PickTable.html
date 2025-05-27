@@ -1,7 +1,66 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <style>
 
+.dp-row-action-highlight {
+  background-color: #b3e6ff !important; /* Light blue, or pick your color */
+  transition: background 9.3s;
+}
+  /* Table heading font size */
+  #order-listing th {
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+/* Table data font size */
+  #order-listing td {
+    font-size: 12px !important;
+    font-weight: 400;
+  }
 
+/* Floating alert style */
+.dp-float-alert {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 8px 8px;
+  border-radius: 30px;
+  font-size: 1rem;
+  z-index: 99999;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.dp-float-alert.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+  .disabled-remark {
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+  pointer-events: none !important; /* <-- Add this line to fully disable hover/click */
+
+}
+/* Center all action icons in their cell */
+#order-listing td {
+  vertical-align: middle !important;
+}
+#order-listing td a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px; /* or match your row height */
+  vertical-align: middle;
+}
+#order-listing td a img {
+  display: block;
+  height: 22px;
+  width: 22px;
+  object-fit: contain;
+  margin: 0 2px;
+}
 
 .image-slider-modal {
   display: none;
@@ -294,6 +353,13 @@
     max-height: 2000px;
   }
 </style>
+<style id="dp-row-action-highlight-style">
+  .dp-row-action-highlight {
+    background-color: #b3e6ff !important; /* Light blue */
+    box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+</style>
 
 <div class="content-wrapper">
   <h5 class="text-left mt-0 mb-3" style="font-size: 16px; font-weight: 700;">
@@ -418,6 +484,8 @@
                         T
                       </div>
                     </td>
+
+                    <!-- Action - Edit, Bin adn View -->
                     <td>
                       <a href="#" title="Edit">
                         <img
@@ -433,12 +501,13 @@
                           style="width: 20px; margin-right: 8px; height: auto"
                         />
                       </a>
-                      <a
-                        href="#"
-                        class="text-primary tray-scan-btn"
-                        style="text-decoration: underline"
-                        >Tray Scan</a
-                      >
+                      <a href="#" class="tray-scan-btn" title="Tray Scan" style="display: inline-flex; align-items: center; justify-content: center;">
+    <img
+      src="{% static 'assets/icons/view.png' %}"
+      alt="Tray Scan"
+      style="width: 22px; height: 22px; object-fit: contain; display: block;"
+    />
+  </a>
                     </td>
                     <td>
                       <div
@@ -537,19 +606,25 @@
                     <td>10</td>
                     <td>50</td>
                     <td>
-                      <div
+                     <div
                         title="Tray Scan"
                         class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                         style="
-                           width: 20px;
+                          width: 20px;
                           height: 20px;
-                              line-height: 20px;
-
-                          background-color: #c3c2c2;
+                         background: linear-gradient(
+                            to right,
+                            green 50%,
+                            #bfbfbf 50%
+                          );
                           color: white;
                           font-weight: bold;
+            line-height: 20px;
+
+                          text-align: center;
                           padding-top: 1px;
                           padding-right: 1px;
+  "
                         "
                       >
                         T
@@ -608,36 +683,23 @@
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
@@ -679,17 +741,15 @@
                         style="
                           width: 20px;
                           height: 20px;
-                              line-height: 20px;
-
-                          background: linear-gradient(
-                            to right,
-                            green 50%,
-                            #bfbfbf 50%
-                          );
+                          background-color: #0c8249;
                           color: white;
                           font-weight: bold;
+            line-height: 20px;
+
+                          text-align: center;
                           padding-top: 1px;
                           padding-right: 1px;
+  "
                         "
                       >
                         T
@@ -710,12 +770,13 @@
                           style="width: 20px; margin-right: 8px; height: auto"
                         />
                       </a>
-                      <a
-                        href="#"
-                        class="text-primary tray-scan-btn"
-                        style="text-decoration: underline"
-                        >Tray Scan</a
-                      >
+                      <a href="#" class="tray-scan-btn" title="Tray Scan" style="display: inline-flex; align-items: center; justify-content: center;">
+    <img
+      src="{% static 'assets/icons/view.png' %}"
+      alt="Tray Scan"
+      style="width: 22px; height: 22px; object-fit: contain; display: block;"
+    />
+  </a>
                     </td>
                     <td>
                       <div
@@ -748,36 +809,23 @@
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
@@ -865,7 +913,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -881,43 +928,29 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
@@ -1006,7 +1039,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -1022,188 +1054,36 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
+
                   <!-- Row 4 (new, same static data) -->
                   <tr>
                     <td>6</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <!-- Model/Stock No - Image hover -->  
-                    <td style="position: relative;">
-                      <span class="model-hover-trigger" style="cursor: pointer;">1805
-                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
-                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
-                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
-                            <img src="/static/assets/images/banner_12.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/banner_6.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/thumb-v-y-2.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/10.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-
-                          </div>
-
-
-                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
-                        </div>
-                      </span>
-                    </td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>50</td>
-                    <td>
-                      <div
-                        title="Tray Scan"
-                        class="d-flex align-items-center justify-content-center rounded-circle"
-                        style="
-                          width: 20px;
-                          height: 20px;
-                          background-color: #d3d2d2;
-                          color: white;
-                          font-weight: bold;
-                          font-size: 16px;
-                          
-                          padding: 0;
-                          margin: 0;
-                          padding-top: 1px;
-                          padding-right: 1px;
-                        "
-                      >
-                        T
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#" title="Edit">
-                        <img
-                          src="{% static 'assets/icons/edit1.png' %}"
-                          alt="Edit"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <a href="#" title="Delete">
-                        <img
-                          src="{% static 'assets/icons/bin.png' %}"
-                          alt="Delete"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        class="text-primary tray-scan-btn"
-                        style="text-decoration: underline"
-                        >Tray Scan</a
-                      >
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 1px solid #a6a6a6;
-                          background-color: #dcdada;
-                          color: #505050;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                          
-                        "
-                      >
-                        Yet to Start
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 1px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                          
-                        "
-                      >
-                        Day Planning
-                      </div>
-                    </td>
-                    <td style="padding: 20px 0 20px 20px">
-                      <a
-                        href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
-                      </a>
-                    </td>
-                  </tr>
-                  <!-- Row 4 (new, same static data) -->
-                  <tr>
-                    <td>7</td>
                     <td>2025-05-22 10:00 AM</td>
                     <!-- Model/Stock No - Image hover -->  
                     <td style="position: relative;">
@@ -1284,7 +1164,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -1300,46 +1179,158 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
+
+                  <!-- Row 4 (new, same static data) -->
+                  <tr>
+                    <td>7</td>
+                    <td>2025-05-22 10:00 AM</td>
+                    <!-- Model/Stock No - Image hover -->  
+                    <td style="position: relative;">
+                      <span class="model-hover-trigger" style="cursor: pointer;">1805
+                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
+                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
+                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
+                            <img src="/static/assets/images/banner_12.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/banner_6.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/thumb-v-y-2.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            <img src="/static/assets/images/10.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+
+                          </div>
+
+
+                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
+                        </div>
+                      </span>
+                    </td>
+                    <td>ISP</td>
+                    <td>A - Buffed</td>
+                    <td>A</td>
+                    <td>Nil</td>
+                    <td>Jumbo 14</td>
+                    <td>10</td>
+                    <td>50</td>
+                    <td>
+                      <div
+                        title="Tray Scan"
+                        class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                        style="
+                          width: 20px;
+                          height: 20px;
+                          background-color: #d3d2d2;
+                          color: white;
+                          font-weight: bold;
+                          font-size: 16px;
+                          line-height: 1;
+                          padding: 0;
+                          margin: 0;
+                          padding-top: 1px;
+                          padding-right: 1px;
+                        "
+                      >
+                        T
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a
+                        href="#"
+                        class="text-primary tray-scan-btn"
+                        style="text-decoration: underline"
+                        >Tray Scan</a
+                      >
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 1px solid #a6a6a6;
+                          background-color: #dcdada;
+                          color: #505050;
+                          font-size: 12px;
+                          white-space: nowrap;
+                          padding: 6px;
+                        "
+                      >
+                        Yet to Start
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 1px solid #9adeed;
+                          background-color: #d1edf3;
+                          color: #033b5d;
+                          font-size: 12px;
+                          white-space: nowrap;
+                          padding: 6px;
+                        "
+                      >
+                        Day Planning
+                      </div>
+                    </td>
+                    <td style="padding: 20px 0 20px 20px">
+                                           <a
+                        href="#"
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
+                      >
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
+                      </a>
+                      <a
+                        href="#"
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
+                      >
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
+                      </a>
+                    </td>
+                  </tr>
+
                   <!-- Row 4 (new, same static data) -->
                   <tr>
                     <td>8</td>
@@ -1423,7 +1414,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -1439,7 +1429,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
@@ -1512,7 +1501,7 @@
                     <td>
                       <div
                         title="Tray Scan"
-                        class="d-flex align-items-center justify-content-center rounded-circle"
+                        class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                         style="
                           width: 20px;
                           height: 20px;
@@ -1562,7 +1551,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -1578,46 +1566,33 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
+
                   <!-- Row 4 (new, same static data) -->
                   <tr>
                     <td>10</td>
@@ -1701,7 +1676,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -1717,7 +1691,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
@@ -1840,7 +1813,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -1856,46 +1828,33 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
+
                   <!-- Row 4 (new, same static data) -->
                   <tr>
                     <td>4</td>
@@ -1979,7 +1938,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -1995,46 +1953,33 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
+
                   <!-- Row 4 (new, same static data) -->
                   <tr>
                     <td>4</td>
@@ -2118,7 +2063,6 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Yet to Start
@@ -2134,182 +2078,29 @@
                           font-size: 12px;
                           white-space: nowrap;
                           padding: 6px;
-                          
                         "
                       >
                         Day Planning
                       </div>
                     </td>
                     <td style="padding: 20px 0 20px 20px">
-                      <a
+                                           <a
                         href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
+                        title="Add Audio Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 0; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                       <a
                         href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
-                      </a>
-                    </td>
-                  </tr>
-                  <!-- Row 4 (new, same static data) -->
-                  <tr>
-                    <td>4</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <!-- Model/Stock No - Image hover -->  
-                    <td style="position: relative;">
-                      <span class="model-hover-trigger" style="cursor: pointer;">1805
-                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
-                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
-                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
-                            <img src="/static/assets/images/banner_12.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/banner_6.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/thumb-v-y-2.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/10.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-
-                          </div>
-
-
-                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
-                        </div>
-                      </span>
-                    </td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>50</td>
-                    <td>
-                      <div
-                        title="Tray Scan"
-                        class="d-flex align-items-center justify-content-center rounded-circle"
-                        style="
-                          width: 20px;
-                          height: 20px;
-                          background-color: #d3d2d2;
-                          color: white;
-                          font-weight: bold;
-                          font-size: 16px;
-                          line-height: 1;
-                          padding: 0;
-                          margin: 0;
-                          padding-top: 1px;
-                          padding-right: 1px;
-                        "
-                      >
-                        T
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#" title="Edit">
-                        <img
-                          src="{% static 'assets/icons/edit1.png' %}"
-                          alt="Edit"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <a href="#" title="Delete">
-                        <img
-                          src="{% static 'assets/icons/bin.png' %}"
-                          alt="Delete"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        class="text-primary tray-scan-btn"
-                        style="text-decoration: underline"
-                        >Tray Scan</a
-                      >
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 1px solid #a6a6a6;
-                          background-color: #dcdada;
-                          color: #505050;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                          
-                        "
-                      >
-                        Yet to Start
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 1px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                          
-                        "
-                      >
-                        Day Planning
-                      </div>
-                    </td>
-                    <td style="padding: 20px 0 20px 20px">
-                      <a
-                        href="#"
-                        title="VoiceRec"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/rec.png' %}"
-                          alt="VoiceRec"
-                          style="width: 20px; height: 20px"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        title="Chat"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+                        <!-- (Optional: include the tooltip div here if you want the tooltip) -->
                       </a>
                     </td>
                   </tr>
@@ -2358,10 +2149,20 @@
                     </div>
                   </div>
 
-                  <!-- Existing centered h3 title -->
-                  <h5 style="text-align: center">
-                    Day Planning - Tray Info Table (Before the Scan)
-                  </h5>
+                  <!-- Existing centered h3 title for (Before the scan)-->
+                  <!-- Redo icon for clearing "tray ID" -->
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
+                      Day Planning - Tray Scan
+                    </h5>
+                    <img
+                      src="{% static 'assets/icons/redo2.png' %}"
+                      alt="Redo"
+                      id="trayScanRedoBtn"
+                      style="width: 24px; height: 24px; cursor: pointer; margin-right: 14px;"
+                      title="Clear Tray IDs"
+                    />
+                  </div>
 
                   <!-- trayScanDetails will be a scrollable 3-column grid with headers and unlimited rows -->
                   <div id="trayScanDetails" class="table-grid">
@@ -2372,49 +2173,22 @@
 
                     <!-- Example rows (replace with dynamic content) -->
                   </div>
-                  <!-- ✅ NEW BUTTONS SECTION -->
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      gap: 10px;
-                      margin-top: 20px;
-                    "
-                  >
-                    <button
-                      style="
-                        padding: 8px 16px;
-                        background: #007bff;
-                        color: white;
-                        border: none;
-                        border-radius: 30px;
-                      "
-                    >
-                      Draft
-                    </button>
-                    <button
-                      style="
-                        padding: 8px 16px;
-                        background: #28a745;
-                        color: white;
-                        border: none;
-                        border-radius: 30px;
-                      "
-                    >
-                      Submit
-                    </button>
-                    <button
-                      style="
-                        padding: 8px 16px;
-                        background: #dc3545;
-                        color: white;
-                        border: none;
-                        border-radius: 30px;
-                      "
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                 <!-- ✅ Wrap the buttons in a container for easy toggling -->
+                <div class="tray-scan-modal-buttons"
+                  style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                  <button
+                    style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 30px;">
+                    Draft
+                  </button>
+                  <button
+                    style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;">
+                    Submit
+                  </button>
+                  <button
+                    style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
+                    Cancel
+                  </button>
+                </div>
                 </div>
               </div>
             </div>
@@ -2453,6 +2227,81 @@
 
   <!-- Script for Sorting the Table for each rows -->
   {% block script %}
+   <!-- Script for clearing "Tray ID" while hitting "Redo" icon -->
+  <script nonce="{{ csp_nonce }}">
+  document.addEventListener("DOMContentLoaded", function () {
+    const redoBtn = document.getElementById("trayScanRedoBtn");
+    if (redoBtn) {
+      redoBtn.title = "Redo"; // Set tooltip on mouse hover
+    }
+  
+    const detailsDiv = document.getElementById("trayScanDetails");
+    const table = document.getElementById('order-listing');
+    let msgBar = document.getElementById('dp-table-msg-bar');
+  
+    // Create message bar if not present
+    if (!msgBar && table) {
+      msgBar = document.createElement('div');
+      msgBar.id = 'dp-table-msg-bar';
+      msgBar.style.display = 'none';
+      msgBar.style.width = '100%';
+      msgBar.style.margin = '0 0 8px 0';
+      msgBar.style.padding = '10px 24px';
+      msgBar.style.background = '#d1eaff';
+      msgBar.style.color = '#0056b3';
+      msgBar.style.fontWeight = 'bold';
+      msgBar.style.borderRadius = '8px';
+      msgBar.style.fontSize = '1.1rem';
+      msgBar.style.textAlign = 'center';
+      msgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
+      table.parentNode.insertBefore(msgBar, table);
+    }
+  
+    // --- FIX: Show alert inside modal form, not on table ---
+    let formMsgBar = document.getElementById('tray-id-clear-msg-bar');
+    const modal = document.getElementById('trayScanModal');
+    if (!formMsgBar && modal) {
+      formMsgBar = document.createElement('div');
+      formMsgBar.id = 'tray-id-clear-msg-bar';
+      formMsgBar.style.display = 'none';
+      formMsgBar.style.width = '100%';
+      formMsgBar.style.margin = '0 0 8px 0';
+      formMsgBar.style.padding = '8px 16px';
+      formMsgBar.style.background = '#ffd6d6';
+      formMsgBar.style.color = '#b30000';      // red text
+      formMsgBar.style.fontWeight = 'bold';
+      formMsgBar.style.borderRadius = '8px';
+      formMsgBar.style.fontSize = '14px';      // 14px font
+      formMsgBar.style.textAlign = 'center';
+      formMsgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
+      const modalContent = modal.querySelector('.tray-scan-modal-content');
+      if (modalContent) {
+        modalContent.insertBefore(formMsgBar, modalContent.firstChild);
+      }
+    }
+    // -------------------------------------------------------
+  
+    if (redoBtn && detailsDiv) {
+      redoBtn.addEventListener("click", function () {
+        detailsDiv.querySelectorAll('input[type="text"]').forEach(function(input) {
+          input.value = "";
+        });
+        // Show line alert INSIDE MODAL FORM
+        if (formMsgBar) {
+          formMsgBar.textContent = "Tray ID Cleared Successfully";
+          formMsgBar.style.display = 'block';
+          formMsgBar.style.opacity = '1';
+          formMsgBar.style.background = '#d1eaff';
+          formMsgBar.style.color = '#0056b3';
+          setTimeout(function () {
+            formMsgBar.style.opacity = '0';
+            setTimeout(function () { formMsgBar.style.display = 'none'; }, 300);
+          }, 2000);
+        }
+      });
+    }
+  });
+  </script>
   <script nonce="{{ csp_nonce }}">
     document.addEventListener("DOMContentLoaded", function () {
       const table = document.getElementById("order-listing");
@@ -2560,7 +2409,7 @@
     });
   </script>
 
-  <script nonce="{{ csp_nonce }}">
+    <script nonce="{{ csp_nonce }}">
   document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("order-listing");
     if (!table) return;
@@ -2869,7 +2718,180 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-  
+
+  <script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", () => {
+  const trayScanLinks = document.querySelectorAll(".tray-scan-btn");
+  const modal = document.getElementById("trayScanModal");
+  const closeBtn = document.getElementById("closeTrayScanModal");
+  const modalButtons = document.querySelector(".tray-scan-modal-buttons");
+
+  trayScanLinks.forEach((link) => {
+    // Only hide buttons if the trigger is the view.png icon
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      // If the clicked element is an IMG (view.png), hide buttons
+      if (event.target.tagName === "IMG") {
+        if (modalButtons) modalButtons.style.display = "none";
+      } else {
+        if (modalButtons) modalButtons.style.display = "flex";
+      }
+      modal.classList.add("open");
+    });
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.classList.remove("open");
+    if (modalButtons) modalButtons.style.display = "flex";
+  });
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.classList.remove("open");
+      if (modalButtons) modalButtons.style.display = "flex";
+    }
+  });
+});
+</script>
+
+
+
+<!-- Script for disable/enable remarks fields as per the status -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("#order-listing tbody tr").forEach(function(row, index) {
+    const batchStatusCell = row.children[12];
+    const processStatusCell = row.children[10];
+
+    // Normalize status strings
+    const normalize = (str) => str?.replace(/\s+/g, ' ').trim().toLowerCase() || "";
+
+    const batchStatus = normalize(batchStatusCell?.textContent);
+    const processStatus = normalize(processStatusCell?.textContent);
+
+    // Debug: log normalized statuses
+    // console.log(`Row ${index + 1}: BatchStatus='${batchStatus}', ProcessStatus='${processStatus}'`);
+
+    const disabledStatuses = ["released", "yet to release"];
+
+    if (disabledStatuses.includes(batchStatus) || disabledStatuses.includes(processStatus)) {
+      row.querySelectorAll('.remark-tooltip-trigger').forEach(function(trigger) {
+        trigger.classList.add('disabled-remark');
+        trigger.setAttribute('title', 'Remarks are disabled for Released or Yet to Release status');
+        trigger.style.pointerEvents = 'auto';
+        trigger.style.opacity = '0.5';
+
+        trigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      });
+    }
+  });
+});
+</script>
+
+<!-- script for buttons in form & highlight -->
+
+<script nonce="{{ csp_nonce }}">
+// filepath: a:\Workspace\Track_and_Trace_v2\static\templates\Day_Planning\DP_PickTable.html
+document.addEventListener("DOMContentLoaded", function() {
+  const table = document.getElementById('order-listing');
+  const modal = document.getElementById('trayScanModal');
+  const msgBarId = 'dp-table-msg-bar';
+  let msgBar = document.getElementById(msgBarId);
+
+  // Create message bar if not present
+  if (!msgBar && table) {
+    msgBar = document.createElement('div');
+    msgBar.id = msgBarId;
+    msgBar.style.display = 'none';
+    msgBar.style.width = '100%';
+    msgBar.style.margin = '0 0 8px 0';
+    msgBar.style.padding = '10px 24px';
+    msgBar.style.background = '#d1eaff';
+    msgBar.style.color = '#0056b3';
+    msgBar.style.fontWeight = 'bold';
+    msgBar.style.borderRadius = '8px';
+    msgBar.style.fontSize = '1.1rem';
+    msgBar.style.textAlign = 'center';
+    msgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
+    table.parentNode.insertBefore(msgBar, table);
+  }
+
+  // Highlight style (if not present)
+  if (!document.getElementById('dp-row-action-highlight-style')) {
+    var style = document.createElement('style');
+    style.id = 'dp-row-action-highlight-style';
+    style.innerHTML = `
+      .dp-row-action-highlight {
+        box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
+        transition: box-shadow 9.3s;
+        background-color: #f0f8ff !important;
+        animation: highlightAnimation 2s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  const btnMsg = {
+    "Draft": "Drafted successfully",
+    "Submit": "Submitted successfully",
+    "Cancel": "Cancelled successfully"
+  };
+  const btnBg = {
+    "Draft": "#d1eaff",    // blue
+    "Submit": "#d4f7d4",   // green
+    "Cancel": "#ffd6d6"    // red
+  };
+  const btnColor = {
+    "Draft": "#0056b3",
+    "Submit": "#218838",
+    "Cancel": "#b30000"
+  };
+
+  document.querySelectorAll('.tray-scan-modal-buttons button').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      // 1. Close the modal immediately
+      if (modal) modal.classList.remove('open');
+
+      // 2. Show alert and highlight row
+      let btnText = btn.textContent.trim();
+      let msg = btnMsg[btnText] || "Action successful";
+      let bg = btnBg[btnText] || "#d1eaff";
+      let color = btnColor[btnText] || "#0056b3";
+      if (msgBar) {
+        msgBar.textContent = msg;
+        msgBar.style.display = 'block';
+        msgBar.style.opacity = '1';
+        msgBar.style.background = bg;
+        msgBar.style.color = color;
+      }
+      document.querySelectorAll('tr.highlighted-tray-scan').forEach(function(row) {
+        row.classList.add('dp-row-action-highlight');
+        setTimeout(function() {
+          row.classList.remove('dp-row-action-highlight');
+        }, 2000);
+      });
+
+      // 3. Hide alert after 2s (and redirect if needed)
+      setTimeout(function() {
+        if (msgBar) {
+          msgBar.style.opacity = '0';
+          setTimeout(function() { msgBar.style.display = 'none'; }, 300);
+        }
+        // Uncomment below if you want to redirect after alert
+        // window.location.href = "{% url 'dp_pick_table' %}";
+      }, 3000);
+    });
+  });
+});
+</script>
+
+
+
 
   {% endblock %} {% endblock content %}
 </div>

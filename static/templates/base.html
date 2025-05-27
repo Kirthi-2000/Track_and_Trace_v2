@@ -803,6 +803,26 @@ footer.footer {
               </ul>
             </div>
           </li>
+           <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#editors" aria-expanded="false" aria-controls="ui-advanced">
+                <i class="fa fa-industry menu-icon"></i>
+                <span class="menu-title">Brass QC</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="editors">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> 
+                  <a class="nav-link" href="{% url 'BrassPickTableView' %}">Brass Qc Pick Table</a>
+                </li>
+                <li class="nav-item"> 
+                  <a class="nav-link" href="{% url 'IqfPickTableView' %}">IQF Pick Table</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'IqpRejectTableView' %}">IQF Reject Table</a>
+                </li>
+              </ul>
+            </div>
+          </li>
           <span class="menu-title" style="font-size: 10px; padding: 3px; font-weight: 600;">Recovery Module</span>
 
            <li class="nav-item">

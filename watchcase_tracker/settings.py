@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'adminportal',
     'Day_Planning',
     'Input_Screening',
+    'Brass_Qc',
     'rest_framework',
     'csp',
 ]

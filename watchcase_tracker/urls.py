@@ -26,6 +26,7 @@ urlpatterns = [
     path('adminportal/',include('adminportal.urls')),
     path('day_planning/',include('Day_Planning.urls')),
     path('input_screening/',include('Input_Screening.urls')),
+    path('brass_qc/',include('Brass_Qc.urls')),
 
 
 ]
